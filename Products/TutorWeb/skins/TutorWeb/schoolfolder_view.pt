@@ -1,0 +1,109 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+<!-- <div metal:fill-slot="column_two_slot">
+     
+    </div> -->
+   <div metal:fill-slot="main">
+     
+     <h1>
+		<span tal:replace="here/Title"/>
+        </h1>
+    <metal:listingmacro define-macro="folderlisting">
+        <tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter={'portal_type': 'School', 'sort_on':'getId'});">
+	<tal:listing condition="folderContents">
+	    <table class="listing">
+	    <thead><tr>
+		<th align="centre">School Name </th>
+
+            </tr></thead>
+	    <metal:block tal:repeat="obj folderContents">
+              <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+				     "> 
+		 <tr tal:define="oddrow repeat/obj/odd"
+		     tal:attributes="class python:test(oddrow, 'even', 'odd')">
+		   <td metal:define-macro="listitem"
+		     tal:define="url obj/getURL;
+				 icon obj/getIcon;
+				  utool nocall:here/portal_url;
+		         ">
+		<a href="#" tal:attributes="href url">
+		    
+		     <img src="" alt=""
+			  tal:attributes="src string:${utool}/${icon};
+					  alt obj/Title"/>
+		</a>  
+		<a href="#" tal:attributes="href python:url"
+			    tal:content="obj/Title" />
+	       
+		</td>
+            </tr>
+	  </tal:block>
+	 </metal:block> 
+       </table>
+     </tal:listing>
+ 	</tal:foldercontents> 
+	
+	
+      </metal:listingmacro>
+<!--     
+<block tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/department_slides_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Slide Material
+                    </a>
+		  </block>
+<br>
+<br> -->
+<!--     
+     <block tal:define="url1 here/absolute_url;"> 
+     <a href="#" tal:attributes="href python:url1+'/twdownload_tutorial'">
+     Download tutorial
+     </a>
+     </block> -->
+   <!--  <metal:block use-macro="here/department_courses/macros/tutorialview">download link</metal:block> -->
+     <!--
+        <ul>
+            <li>
+          
+                <a class="" href=""
+		   tal:define="URL here/absolute_url"
+                   tal:attributes="href python:URL+'/department_courses'">
+            <dtml-var helloWorld>
+                    Courses
+                    
+                </a>
+            
+            </li>
+	    <li>
+          
+                <a class="" href=""
+		   tal:define="URL here/absolute_url"
+                   tal:attributes="href python:URL+'/department_tutorials'">
+            
+                    Tutorials
+                    
+                </a>
+            
+            </li>
+        </ul>
+	
+-->
+			
+	
+   </div>
+</body>
+</html>

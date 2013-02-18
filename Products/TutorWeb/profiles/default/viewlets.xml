@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<object>
+<hidden manager="plone.belowcontenttitle" skinname="Plone Default">
+    <viewlet name="plone.belowcontenttitle.documentbyline" />
+  </hidden>
+</object>

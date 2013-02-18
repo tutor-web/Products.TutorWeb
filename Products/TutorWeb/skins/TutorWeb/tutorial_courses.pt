@@ -1,0 +1,90 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+<div metal:fill-slot="column_one_slot">
+     </div>
+    
+<!--     <div metal:fill-slot="column_two_slot">
+     
+    </div>
+  -->
+   <div metal:fill-slot="main">
+     
+     <h1>
+		<span tal:replace="here/Title"/>
+        </h1>
+     <br>
+
+     <ul id="portal-globalnav"
+	 tal:define="URL here/absolute_url">
+       <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_view'">
+            
+                    Lectures
+                    
+                </a>
+            
+            </li>
+       <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_literature'">
+            
+                    Literature
+                    
+                </a>
+            
+            </li>
+            <li class="selected">
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_courses'">
+            
+                    Related Courses
+                    
+                </a>
+            
+            </li>
+	    <!--
+	    <li tal:condition="python:isteacher and haveExtraMaterial" 
+		    tal:define="haveExtraMaterial here/haveAcknowledgementFolder;
+				isteacher here/canSeeQuestions"> 
+		  <a href="#" tal:attributes="href python:URL+'/acknowledgement/tutorial_extradata'">
+			 <span>   Acknowledgement  </span>
+                        </a>
+		   
+       </li> -->
+	    <li tal:condition="python:isteacher"
+			  tal:define="isteacher here/canSeeQuestions"> 
+		  <a href="#" tal:attributes="href python:URL+'/tutorial_sponsors'">
+			 <span>   Sponsors  </span>
+                        </a>
+		   
+       </li> 
+	     <li>
+		 
+	     <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_results'">
+                Quiz Results 
+                    
+                </a>
+            
+            </li>
+	    </ul>
+        <hr>
+		<metal:data use-macro="python:here.widget('Courses')"/>
+	
+   </div>
+</body>
+</html>

@@ -1,0 +1,7 @@
+Breytti ./skins/Tutorweb/slideshowpdf.pt
+l:37  
+   -<a href="" tal:attributes="href string:${context/absolute_url}/download_lecture/$pdfname">
+
+   +<a href="" tal:attributes="href string:${anotherurl}/download_lecture/$pdfname">
+
+

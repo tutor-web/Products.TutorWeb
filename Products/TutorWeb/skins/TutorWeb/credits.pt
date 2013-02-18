@@ -1,0 +1,9 @@
+<div id="design-credits"
+     i18n:domain="custom_i18n_domain">
+
+    
+        <span tal:omit-tag="python:True"
+              tal:content="view/designer"
+              >Terry Gilliam</span>
+	      
+</div>

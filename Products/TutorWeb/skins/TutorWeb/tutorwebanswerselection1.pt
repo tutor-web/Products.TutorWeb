@@ -1,0 +1,41 @@
+
+
+    <div id="tutorwebanswerselection1">
+     <!--
+     <block tal:condition="question"
+     	     tal:define="
+        		result python:here.mymaybeMakeResult();
+			question python:result.getChosenQuestion();
+			
+			 
+			"> -->
+			
+	<block tal:condition="python:question"
+	       tal:define="question python:here.getQuestion();
+	       	           result python:here.mymaybeMakeResult();
+             ">
+	     
+			
+			
+	<block tal:condition="show"
+	       tal:define="
+	       inlineanswer     python:question.inlineAnswer();    
+	       resultsView  python:False;
+	       show python:inlineanswer and (not resultsView);
+	       
+		
+    	   	      ">
+	  <block tal:condition="ans"
+	         tal:define="ans here/getSelectedItem;
+		             ch here/getChanged; 
+			     answers python:result.getSelectedAnswerToQuestion(question);
+                 ">
+    
+     <span tal:replace="structure answers"/>
+     
+     </block>
+     </block> 
+     </block>  
+     <!-- <metal:fieldMacro use-macro="python:here.widget('AnswerPullDown', mode='view')" /> --> 
+   </div>
+

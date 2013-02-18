@@ -1,0 +1,153 @@
+0;115;0c<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+<!--
+<div metal:fill-slot="column_two_slot">
+  </div> -->
+   <div metal:fill-slot="column_one_slot">
+  </div>
+   <div metal:fill-slot="main">
+     
+     <h1>
+		<span tal:replace="here/Title"/>
+		<tal:block tal:define="codename python:here.aq_parent.getCode()+' ' +here.getCode()">
+		       <block style="font-size:9px;">
+			     <span tal:replace="python:'     '+codename"/>
+			     </block>
+	</tal:block> 
+        </h1>
+     <br>
+<!--
+     in plone, if you've a button, you can define what it will do next. So,
+add a traverse_to to the button to a confermation form, and the button
+in the form to go to the delete action.  -->
+       
+     <!-- <div metal:use-macro=" -->
+     <block tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/tutorial_slides_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Slide Material
+                    </a>
+		  </block>
+<br>
+<br> 
+	<ul id="portal-globalnav"
+	    tal:define="URL here/absolute_url">
+       <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_view'">
+            
+                    Lectures
+                    
+                </a>
+            
+            </li>
+       <li class="selected">
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_literature'">
+            
+                    Literature
+                    
+                </a>
+            
+            </li>
+       <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_courses'">
+            
+                    Tutorial Courses
+                    
+                </a>
+            
+            </li>
+       <!-- <li tal:condition="python:isteacher and haveExtraMaterial" 
+		    tal:define="haveExtraMaterial here/haveAcknowledgementFolder;
+					isteacher here/canSeeQuestions"> 
+		  <a href="#" tal:attributes="href python:URL+'/acknowledgement/tutorial_extradata'">
+			 <span>   Acknowledgement  </span>
+                        </a>
+		   
+       </li> -->
+       <li tal:condition="python:isteacher"
+			  tal:define="isteacher here/canSeeQuestions"> 
+		  <a href="#" tal:attributes="href python:URL+'/tutorial_sponsors'">
+			 <span>   Sponsors  </span>
+                        </a>
+		   
+       </li> 
+       <li>
+		 
+	     <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_results'">
+                Quiz Results
+                    
+                    
+                </a>
+            
+            </li>
+	    </ul>
+        <hr>
+    
+     	<tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter={'portal_type': 'File'});
+			"> 
+	  
+
+	<tal:listing condition="folderContents">
+	    <table class="listing">
+	    <thead><tr>	
+		   <th>Title</th>
+		   
+               </tr></thead>
+            
+	    <metal:block tal:repeat="obj folderContents">
+	      <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+				     
+                  "> 
+		 <tr tal:define="oddrow repeat/obj/odd"
+		     tal:attributes="class python:test(oddrow, 'even', 'odd')">
+		   <td metal:define-macro="listitem"
+		     tal:define="url obj/getURL;
+		         icon obj/getIcon;
+			 utool nocall:here/portal_url;">
+		<a href="#" tal:attributes="href url">
+		     <img src="" alt=""
+			  tal:attributes="src string:${utool}/${icon};alt
+					  obj/Title"/>
+		</a>
+		<a href="#" tal:attributes="href url"
+			    tal:content="obj/Title" />
+	       
+		</td>
+		   
+		   </tr>
+		 </tal:block>
+	    </metal:block> 
+	    </table>
+	</tal:listing>
+	 
+	<p class ="discreet"
+	   tal:condition="not: folderContents"
+	   i18n:translate="description_no_lectures_in_tutorial">
+	   "There is currently no literary material belonging to the tutorial."
+	</p>
+	</tal:foldercontents>
+	
+   </div>
+</body>
+</html>

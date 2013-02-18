@@ -1,0 +1,121 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+   <div metal:fill-slot="main">
+     
+     <h1>
+		<span tal:replace="here/Title"/>
+        </h1>
+     <br>
+ <metal:view_macro define-macro="tutorialview">
+     <ul id="portal-globalnav"
+	 tal:define="URL here/absolute_url">
+       <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/department_view'">
+            
+                    Department Courses
+                    
+                </a>
+            
+            </li>
+            <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/department_tutorials'">
+            
+                    Tutorials
+                    
+                </a>
+            
+            </li>
+	     <li>
+		 
+	     <a class="" href=""
+                   tal:attributes="href python:URL+'/department_results'">
+                Quiz Results
+                    
+                    
+                </a>
+            
+            </li>
+	    <li class="selected" tal:condition="python:isteacher"
+			  tal:define="isteacher here/canSeeQuestions"> 
+		  <a href="#" tal:attributes="href python:URL+'/department_sponsors'">
+			 <span>   Sponsors  </span>
+                        </a>
+		   
+       </li> 
+	    </ul>
+        <hr>
+	<metal:listingmacro define-macro="folderlisting">
+	<!-- <tal:foldercontents define="folderContents python:here.contentValues(filter={'portal_type': 'Tutorial'});
+		dummy python:folderContents.sort(lambda x,y:cmp(x.id, y.id));"> -->
+	<tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter = 
+                                    {'portal_type' : ['Sponsor']}, batch = True);">
+	<tal:listing condition="folderContents">
+	  
+	    <table class="listing"
+		   tal:define="seeQuestions here/canSeeQuestions">
+	    <thead><tr>
+	    <th tal:condition="seeQuestions" 
+		           align="center"> Sponsor Id </th>
+            <th align="center">Sponsor Name</th>
+	    <th align="center">Sponsor url</th>
+	    <!--<div tal:repeat="field_name here/getListed">
+		 <th tal:content="field_name"> name </th>
+	    </div> -->
+	    </tr></thead>
+	    <metal:block tal:repeat="obj folderContents">
+	     <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+				     realobj obj/getObject;
+                  "> 
+		 <tr tal:define="oddrow repeat/obj/odd"
+		     tal:attributes="class python:test(oddrow, 'even', 'odd')">
+		   <td tal:condition="seeQuestions"
+			tal:define="slid obj/getId">
+		  <id tal:content="slid"/>
+		</td>
+		 <td metal:define-macro="listitem"
+		     tal:define="url obj/getURL;
+		         icon obj/getIcon">
+			 <!-- pdf obj/getTutorial_pdf"> -->
+		<a href="#" tal:attributes="href url">
+		     <img src="" alt=""
+			  tal:attributes="src string:${utool}/${icon};alt
+					  obj/Title"/>
+		</a>
+		<a href="#" tal:attributes="href url"
+			    tal:content="python:realobj.getTitle()" />
+		</td>
+		   <td align="center"
+		       tal:define="codename python:realobj.getSponsorurl()">
+		       <span tal:replace="codename"/>
+		</td>
+		 
+		</tr>
+	      </tal:block> 
+	    </metal:block>
+	    </table>
+	</tal:listing>
+	<p class ="discreet"
+	   tal:condition="not: folderContents"
+	   i18n:translate="description_no_tutorials_in_department">
+	   "There are currently no sponsors listed for the department."
+	</p>
+	</tal:foldercontents>
+	</metal:listingmacro>
+	</metal:view_macro>
+   </div>
+</body>
+</html>

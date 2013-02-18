@@ -1,0 +1,196 @@
+
+    <div id="tutorwebtext_view1">
+        <table class="mainform"
+		  tal:define="typeofimage here/getSlideImageFormat;
+			      maintext here/SlideTextRaw;
+			      mainimag here/getSlideImage;
+			      
+			      ">
+	        
+		
+		
+		
+	       <tr>
+		<tal:block condition="python:mainimag and maintext">
+	        <COLGROUP>
+		  <COL width="50%"/>
+		  <COL width="50%"/>
+                </COLGROUP>
+	
+	<!--	<td>
+			
+			<metal:data use-macro="python:here.widget('SlideTextView')"/>
+			
+	
+	     </td> -->
+		<td> <metal:data use-macro="python:here.widget('SlideText')"/> </td>
+             <td>
+	       <table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('SlideImageCaption')"/></caption>
+		 <tr><td>
+                      <tal:block
+		      define="image python:here.getSlideImage();
+		      photo_display python:'maxi';
+		      im python:here.getSlideImageWWW();
+		      ">
+		        <tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>
+		
+			<a tal:condition="image" tal:attributes="href string:${image/absolute_url}"> 
+			 
+		          <block tal:define="im python:here.getSlideImageWWW()">
+			    <img src="#" alt="" tal:replace="structure python:im.tag()"/>  
+			  </block>
+		        </a>
+		      </tal:block>
+                 </td></tr>
+	       </table>
+             </td>
+             </tal:block>
+	     <tal:block condition="python:maintext and (not mainimag)">
+	       <!--
+	    <td>   <metal:data use-macro="python:here.widget('SlideTextView')"/> </td> -->
+	      
+                 
+	<td>  <metal:data use-macro="python:here.widget('SlideText')"/> </td>	 
+             </tal:block>
+	     <tal:block condition="python:mainimag and (not maintext)">	
+                 <td>
+		<table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('SlideImageCaption')"/></caption>
+		 <tr><td>
+		   <tal:block
+		      define="image python:here.getSlideImage();
+		      photo_display python:'maxi';
+		      im python:here.getSlideImageWWW()">
+		     <tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}"
+		       tal:define="im python:here.getSlideImageWWW()">
+                             						   
+			    <img src="#" alt="" tal:replace="structure python:im.tag()"/>  
+			  
+			
+		      </a>
+		    
+		</tal:block>
+		   </td></tr>
+	       </table>
+	     </td>
+             </tal:block>
+	     
+		
+     </tr>
+          
+        </table>
+       
+     
+    
+        <br>
+	<hr width=150%>
+	<br>
+	
+
+	<table class="explanationform"
+		  tal:define="typeofexplimage here/getExplanationImageFormat;
+			      expltext here/ExplanationRaw;
+			      useexplfig python:here.useExplanationFig();
+			      explimag here/getExplanationImage;
+			      explfig python:explimag and useexplfig;
+			      
+			      ">
+	        
+		
+		
+		
+	       <tr>
+	      
+	       <usefig tal:condition="python:explfig">
+		<tal:block condition="python:explimag and expltext">
+	        <COLGROUP>
+		  <COL width="50%"/>
+		  <COL width="50%"/>
+                </COLGROUP> 
+		 <!--	<td> <metal:data use-macro="python:here.widget('ExplanationView')"/> </td> -->
+		<td>
+			<metal:data use-macro="python:here.widget('Explanation')"/>
+	
+	
+	     </td>
+             <td> 
+	     
+	    
+                 <table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('ExplanationImageCaption')"/></caption>
+		 <tr><td>     
+	       <tal:block define="image python:here.getExplanationImage();
+		      photo_display python:'maxi';
+		      im python:here.getExplanationImageWWW();">
+			<tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>	
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+		     
+			<block tal:define="im python:here.getExplanationImageWWW()">
+			   <img src="#" alt="" tal:replace="structure python:im.tag()"/> 
+			   
+			 </block>
+			
+		      </a>
+		      </tal:block>
+                  
+                  </td></tr>
+	       </table>
+	      
+             </td>
+             </tal:block>
+	     <tal:block condition="python:expltext and (not explimag)">	
+	       <!--
+	       <td> <metal:data use-macro="python:here.widget('ExplanationView')"/> </td> --> 
+                 <td>
+			<metal:data use-macro="python:here.widget('Explanation')"/>
+	
+	     </td>
+             </tal:block>
+	     <tal:block condition="python:explimag and (not expltext)">	
+                 <td>
+		<table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('ExplanationImageCaption')"/></caption>
+		 <tr><td>
+		   <tal:block
+		      define="image python:here.getExplanationImage();
+		      photo_display python:'maxi';
+		      im python:here.getExplanationImageWWW(); ">
+		     <tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>	
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+		     
+		      <block tal:define="im python:here.getExplanationImageWWW()">
+			   <img src="#" alt="" tal:replace="structure python:im.tag()"/>  
+			 </block>
+		      </a>
+		      </tal:block>
+		    </td></tr>
+	       </table>
+	     </td>
+             </tal:block>
+	     
+	</usefig>
+	<notusefig tal:condition="python:not explfig">
+	    <td>
+		<metal:data use-macro="python:here.widget('Explanation')"/>
+	
+	     </td>
+	</notusefig>	   	
+     </tr>
+          
+        </table>
+
+        
+      
+    
+    </div>
+  

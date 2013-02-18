@@ -1,0 +1,168 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+<!-- <div metal:fill-slot="column_two_slot">
+     
+    </div> -->
+   <div metal:fill-slot="main">
+    <tal:define_globals define="
+        membership        context/portal_membership;">
+
+          
+     <h1>
+		<span tal:replace="here/Title"/>
+		
+        </h1>
+     
+     <form name="submit" action="#" method="post"
+	     tal:define="here_url context/@@plone_context_state/object_url;"
+	     tal:attributes="action python:here_url +'/class_enrollment'">
+		  
+		    
+		  <input 
+		  class="context"
+		  type="submit"
+		  name="get"
+		  value="Enroll"
+		  i18n:domain="plone"
+		  i18n:attributes="value"/> 
+       </form> 
+ <!--
+    <metal:listingmacro define-macro="folderlisting">
+      <tal:foldercontents define="folderContents python:here.getInstructors();
+				  ">
+	<tal:listing condition="python:folderContents">
+	 -->   
+	  <table class="listing">
+	    <thead><tr>
+	
+		<th align="centre">Instructor </th>
+                <th align="centre">Contact Information </th>
+                <th align="center"> Class Start Date </th>
+                <th align="center"> Class End Date </th>
+
+            </tr></thead>
+           
+	
+            <tr>
+                <td><metal:data use-macro="python:here.widget('Instructor')"/>  </td>
+		<td><metal:data use-macro="python:here.widget('ContactInformation')"/> </td>
+                <td>  <metal:data use-macro="python:here.widget('effectiveDate')"/> </td>
+              <td> 	<metal:data use-macro="python:here.widget('expirationDate')"/> </td>
+                
+	    </tr>
+	    
+	    <!--  </metal:block>
+	    </metal:block>
+            -->
+	 
+       </table>
+	   <p> <b>Tutorials </b> </p>
+
+	  <metal:data use-macro="python:here.widget('Tutorials')"/>
+        
+ <!--
+     </tal:listing>
+ 	</tal:foldercontents> 
+	
+	
+      </metal:listingmacro>
+ -->
+ <!--
+    <metal:studentlistingmacro define-macro="studentlistingmacro">
+      <tal:students define="students python:here.getEnrolledStudents();
+				  ">
+	<tal:studentlisting condition="python:students">
+	    
+	  <table class="studlisting">
+	    <thead><tr>
+	
+		<th align="centre">Student Name</th>
+                <th align="centre">e-mail </th>
+
+            </tr></thead>
+           
+	    <metal:block tal:repeat="obj students">
+	      <metal:block tal:condition="python:temp > 0"
+			tal:define="temp python:len(obj);
+			            userObj python:membership.getMemberById(obj);">
+            <tr>
+                <td tal:content="python:userObj.getProperty('fullname')"> </td>
+		<td tal:content="python:userObj.getProperty('email')"></td>
+                
+	    </tr>
+	    
+	      </metal:block>
+	    </metal:block>
+            
+	  
+       </table>
+     </tal:studentlisting>
+ 	</tal:students> 
+	
+	
+      </metal:studentlistingmacro>
+-->
+<!--     
+<block tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/department_slides_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Slide Material
+                    </a>
+		  </block>
+<br>
+<br> -->
+<!--     
+     <block tal:define="url1 here/absolute_url;"> 
+     <a href="#" tal:attributes="href python:url1+'/twdownload_tutorial'">
+     Download tutorial
+     </a>
+     </block> -->
+   <!--  <metal:block use-macro="here/department_courses/macros/tutorialview">download link</metal:block> -->
+     <!--
+        <ul>
+            <li>
+          
+                <a class="" href=""
+		   tal:define="URL here/absolute_url"
+                   tal:attributes="href python:URL+'/department_courses'">
+            <dtml-var helloWorld>
+                    Courses
+                    
+                </a>
+            
+            </li>
+	    <li>
+          
+                <a class="" href=""
+		   tal:define="URL here/absolute_url"
+                   tal:attributes="href python:URL+'/department_tutorials'">
+            
+                    Tutorials
+                    
+                </a>
+            
+            </li>
+        </ul>
+	
+-->
+			
+	
+   
+ </tal:define_globals>
+</div>
+</body>
+</html>

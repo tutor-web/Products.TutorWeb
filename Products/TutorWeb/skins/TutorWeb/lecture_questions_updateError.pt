@@ -1,0 +1,243 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title>Error occured while updating questions from file, possibly due to missing answers in one of your questions.</title></head>
+
+<body>
+  <div metal:fill-slot="column_one_slot">
+     </div>
+    
+<!--  <div metal:fill-slot="column_two_slot">
+     
+    </div> -->
+   <metal:block fill-slot="css_slot">
+   <style type="text/css" media="screen" tal:content="string: @import url($portal_url/tutorwebstyles.css);"></style>
+  </metal:block>
+   <div metal:fill-slot="main">
+   <metal:main-macro define-macro="main"
+                      tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                  templateId template/getId">
+     
+	<h1>
+		<span tal:replace="here/Title"/>
+		
+        </h1>
+       
+	
+     
+        <tal:block define="hasquiz here/hasQuiz;
+			   hasQuest here/hasQuestions;">
+                
+		<block tal:condition="hasquiz">
+		  <table>
+		  <tr>
+		      
+		
+		<td tal:condition="hasQuest">
+                     
+	       <form name="submit" action="#" method="post"
+		 tal:define="here_url context/@@plone_context_state/object_url;"	       
+		 tal:attributes="action python:here_url +'/question_submit'" target="main">
+		  
+		    
+		  <input 
+		  class="context"
+		  type="submit"
+		  name="get"
+		  value="Quiz"
+		  i18n:domain="plone"
+		  i18n:attributes="value"/> 
+       </form>
+	       </td>
+
+		<td>&nbsp&nbsp&nbsp&nbsp</td>
+		<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/lecture_questions_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Questions from file
+                    </a>
+		  </td>
+			<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+			  <metal:data use-macro="python:here.widget('QuestionTex', mode='view')"/> 
+			</td>
+
+		<td>&nbsp&nbsp&nbsp&nbsp</td>
+		<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/lecture_questions_download_update'"
+		      tal:attributes="href URL"
+		      >
+		         Write Questions to file
+                    </a>
+		  </td>
+			<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+			  <metal:data use-macro="python:here.widget('DownloadQuestionTex', mode='view')"/> 
+			</td>
+		
+			</tr>
+		  </table>
+                </block>
+		
+        </tal:block>
+	<HR/>
+	<!--
+	 <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
+            Title or id
+        </h1> -->
+	  <br>
+    <tal:seequestions tal:define="seeQuestions here/canSeeQuestions">
+   	<ul id="portal-globalnav"
+	    tal:define="URL here/absolute_url">
+           <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_view'">
+            
+                    Slides
+                    
+                </a>
+            
+            </li>
+	<li class="selected"
+	    tal:condition="seeQuestions">
+	  <a class="" href=""
+                   tal:attributes="href python:URL+'/question_view'">
+            
+                    Questions
+                    
+                </a>
+	</li>
+       <li tal:condition="haveExtraMaterial" 
+		    tal:define="haveExtraMaterial here/haveExtraDataFile;"> 
+		  <a href="#" tal:attributes="href python:URL+'/lecture_extradata'">
+			    <span> Extra Data </span>
+                        </a>
+		   
+       </li>
+       
+       <li>
+	 <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_results'">
+            
+                    Quiz Results
+                    
+                </a>
+            
+            </li>
+        </ul>
+        <hr>
+	
+	
+	<h1 style="color:red;"> Error occured while updating questions from file, possibly due to missing answers in one of your questions. Update aborted. </h1>
+	<!-- List the questions if allowed to see them -->
+       <tal:block condition="seeQuestions">
+<div class="left">
+
+  <dl id="portlet-navigation"
+    class="portlet portletNavigationTree"  
+    >
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#" 
+           class="tile"
+           tal:attributes="href string:${here/absolute_url}/sitemap" 
+           i18n:translate="box_navigation">Lectures</a>
+    </dt>
+    <br>
+    
+    <block tal:condition="lecContents"
+           tal:define="lecContents python:here.aq_parent.getFolderContents(contentFilter={'portal_type': 'Lecture','sort_on':'getId'});">
+    
+      <li tal:repeat="obj lecContents">
+	<block tal:define="url obj/getURL;
+			   url1 python:url+'/lecture_questions';
+		       ">
+		<a href="#" tal:attributes="href url1"
+			    tal:content="obj/getId">
+		  </a>
+	       
+		</block>				
+     </li>
+      
+    </block> 
+    </dl> 
+</div>
+<div class="middle">
+		   <tal:questioncontents define="questionContents python:here.getFolderContents(contentFilter={'portal_type': 'TutorWebQuestion','sort_on':'getId'});
+			">
+		<tal:questionlisting condition="questionContents">
+		<table class="listing" frame="vsides" rules="cols">
+		       <thead><tr>
+		        <th> Question Id </th>
+		        <th>Questions</th>
+			<th> </th>
+		        <th> Number of times appeard in quiz </th>
+		        <th> Number of times correct </th>
+		        </tr></thead>
+		       
+		       <metal:block tal:repeat="obj questionContents">
+			         <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+		        realobj        obj/getObject;				
+			numaskedfor python:realobj.getNumberAskedFor();
+			numcorrect python:realobj.getNumCorrect();">
+				   
+				    <tr tal:define="oddrow repeat/obj/odd"
+				    tal:attributes="class python:test(oddrow, 'even', 'odd')">
+				    <td tal:define="qid obj/getId">
+				         <id tal:content="qid"/>
+                                     </td>				
+				      <td metal:define-macro="questionlistitem"
+					tal:define="url obj/getURL;
+					icon obj/getIcon;
+					utool nocall:here/portal_url;">
+				<a href="#" tal:attributes="href url">
+				<img src="" alt=""
+				     tal:attributes="src string:${utool}/${icon};alt
+						     here/title_or_id"/>
+				</a>
+				<a href="#" tal:attributes="href url"
+				   tal:content="obj/Title" />
+	       
+				</td>
+                                 <td> </td>  
+                                  <td align="center" tal:content="numaskedfor">  </td>
+				  <td align="center" tal:content="numcorrect"/>
+				</tr>
+			   </tal:block>
+			</metal:block> 
+		</table>     
+	</tal:questionlisting>
+	  <p class ="discreet"
+	   tal:condition="not: questionContents">
+	   "There are currently no questions belonging to the lecture."
+	</p>	
+       	</tal:questioncontents>
+  </div>
+        </tal:block> 
+     
+
+   
+      <!-- Set the get question form -->
+      
+      </tal:seequestions>  
+      
+      </metal:main-macro>
+   </div>
+</body>
+</html>

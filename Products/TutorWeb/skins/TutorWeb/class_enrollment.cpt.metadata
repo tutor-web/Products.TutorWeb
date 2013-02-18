@@ -1,0 +1,9 @@
+[default]
+title=Enroll in course
+border=None
+
+[actions]
+action.failure = redirect_to_action:string:view
+action.success=redirect_to_action:string:view
+action.success..Register = traverse_to:string:enrollinclass
+action.success..Cancel = redirect_to_action:string:view

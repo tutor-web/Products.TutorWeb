@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!-- Register the local database settings utility. This is modified via
+     a control panel page in browser/dbsettings.py.
+  -->
+<componentregistry>
+ <utilities>  
+   
+   <utility
+     interface="Products.TutorWeb.interfaces.IDatabaseSettings"
+     factory="Products.TutorWeb.db.TutorWebQuizDatabaseSettings"
+     /> 
+    <utility
+      interface="plone.app.users.userdataschema.IUserDataSchemaProvider"
+      factory="Products.TutorWeb.userdataschema.UserDataSchemaProvider"/>
+ </utilities>
+</componentregistry>

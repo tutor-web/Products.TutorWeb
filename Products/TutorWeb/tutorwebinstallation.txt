@@ -1,0 +1,99 @@
+if numpy is not installed then item_allocation when selecting questions is not performed instead:
+# item_allocation -- a placeholder
+    def item_allocation_temp(self, numansvec, corransvec, grade):
+        selectedindex = random.randint(0, (len(numansvec)-1))
+        return(selectedindex)
+
+ecqtools is not used in Plone4 only Plone3
+
+Inline editing is disabled by default in the latest versions of Plone (3.3+). It can be enabled through the control panel by a Site Manager (Site Setup -> Editing -> Enable Inline Editing checkbox).
+
+If the sql database has not been created on the machine:
+Tutorweb depends on a live database connection. You
+should download and install MySQL 5.0 from http://mysql.org if needed.                
+
+In the 'database' directory, you will find the database script,  tutorweb-tables.sql which creates the 'tutorweb' database and its tables. You can run this with:            
+
+ mysql -u root < zinstance/src/Products.TutorWeb/Products/TutorWeb/database/tutorweb-tables.sql
+
+Assuming there is a user called 'root' with no password. Pass -p if you need
+to specify a password - you will be prompted for one.
+
+SOFTWARE NEEDED
+R
+fig2dev
+latex2html
+gnuplot
+rest2latex - docutils
+imgtops (not used now)
+latex
+dvips
+ps2pdf
+
+Please note that it has not been established which libraries need to be installed for latex.
+
+With tutor-web 
+txt2latex.htm
+struct2latex, StructuredText
+
+
+Installationn:
+1. Run the automatic installation script as root
+./install.sh (standalone or zeo)
+  installed python.2.6.7
+  this will take a while...
+  ####################################################################
+  ######################  Installation Complete  ######################
+
+2. Go to the Plone/zinstance directory and edit the buildout.cfg file
+2.1 Add the two last lines shown below to the eggs section:
+eggs =
+    Plone
+    Pillow
+    Products.Zope_Hotfix_20110622
+    Products.TutorWeb
+    archetypes.referencebrowserwidget==2.4.4
+2.2 Add the last line to the develop section:
+develop =
+#    src/my.package
+     src/Products.TutorWeb
+ea
+2.3 change the versions.cfg file to conttain
+archetypes.referencebrowserwidget     = 2.4.4
+
+3. If needed tar and unzip the appropriate version of Tutorweb - should create a directory: Products.TutorWeb
+3. Copy Products.TutorWeb to the zinstance/src/ directoy
+
+4. run zinstance/bin/configure
+5. Start plone
+   zinstance/bin/plonectl start
+6. Use a browser and go to the appropriate location for example:
+   http://localhost:8080/manage
+7. Enter the username and password given in the zinstance/adminPassword.txt
+8. If not migration from an existing tutorweb site: 
+   8.1 Crate a new site: tutor-web (Click Add Plone Site right top corner)
+9. If migation from an existing site:
+   cp Data.fs file to the appropriate directory for example:
+   ./var/filestorage/Data.fs
+   Make sure to make a copy of the existing Data.fs before copying (mv Data.fs Data.fs.orig
+)
+   If the Data.fs file is very big then you might have to use another method to
+   export the Data.fs file
+10 If the Data.fs was copied you must change the owner and group on the Data.fs file to Plone/Users
+   chown plone Data.fs
+   chgrp users Data.fs
+
+10. Restart plone: zinstance/bin/plonectl stop
+    	    	   zinstance/bin/plonectl start
+12. Use a browser and go to the appropriate location for example:
+   http://localhost:8080/manage
+7. Enter the username and password used by the site using the Data.fs that you copied.
+8. You should see the tutor-web site in the left navigation window
+9. selecte the tutor-web site and goto portal_migration. Follow the instructions to upgrade to Plone4.
+10. Goto the site in a browser and select admin-site setup (top right corner).
+11. Scroll down and select tutorweb quiz database
+12. Set username=root, databasename=tutorweb and click Save
+13. Goto zinstance/src/Products.TutorWeb/Products/TutorWeb/log
+   change owner: chown plone questionandanswer.txt
+14. restart plone
+ 

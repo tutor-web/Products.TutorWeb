@@ -1,0 +1,28 @@
+
+
+    <!-- String Widgets -->
+    <!--
+    <metal:view_macro define-macro="view"
+            tal:define="kssClassesView context/@@kss_field_decorator_view;
+                        getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;">
+        <span metal:define-macro="string-field-view"
+            tal:define="kss_class python:getKssClasses(fieldName,
+                              templateId='widgets/string', macro='string-field-view');"
+            tal:attributes="class kss_class;
+                            id string:parent-fieldname-$fieldName">
+            <span metal:define-slot="inside" 
+                  tal:replace="structure accessor">string</span>
+        </span>
+    </metal:view_macro>
+    -->
+    <div id="tutorwebtext_view1">
+
+    
+      
+       
+            <block tal:define="maintext here/getSlideTextView;"> 
+                  <span tal:replace="structure maintext">string</span>
+		  </block>
+      </div> 
+    
+               

@@ -1,0 +1,279 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+      
+      
+<!-- View/edit free text columns 
+ 
+  -->
+
+<body>
+    <!-- VIEW -->
+    <metal:view_cell_macro define-macro="view_cell">                
+      <div tal:content="cell_value" />
+    </metal:view_cell_macro>
+
+    <!-- EDIT -->
+    <metal:edit_cell_macro define-macro="edit_cell">
+ 
+       <tal:define
+          define="base python:hasattr(value, 'isUnit');
+                  binary python:base and value.isBinary() or here.isBinary(fieldName);
+                  content python: not not base and value.getRaw() or value;
+                  content python: not binary and content or '';
+                  content_length python:len(content);
+                  append_only python: getattr(widget, 'append_only', None);
+                  maxlength python: getattr(widget, 'maxlength', None);
+                  keypress string:textCounter(this, this.form.textCounter_${fieldName}, ${maxlength});
+		  value cell_value;">
+
+        <textarea
+            class="blurrable firstToFocus"
+            tal:attributes="name  string:${fieldName}.${column}:records;
+                            id string:${column}_${fieldId};
+                            cols widget/cols;
+                            rows widget/rows;
+                            onkeydown python:test(maxlength, keypress, None);
+                            onkeyup python:test(maxlength, keypress, None);
+			    onchange eventHandler;
+			    "
+                            
+            tal:define="content python:not append_only and content or '';"
+            tal:content="cell_value">content</textarea>
+
+            <div tal:condition="maxlength"
+                 i18n:translate="label_characters_remaining">
+                <input readonly="readonly"
+                       type="text"
+                       name=""
+                       maxlength="4"
+                       size="4"
+                       value=""
+                       i18n:name="count"
+                       tal:define="remaining python:(int(maxlength) - content_length) + content.count('\n');
+                                   inputsize string:4"
+                       tal:attributes="name string:textCounter_${fieldName};
+                                       value remaining;
+                                       maxlength inputsize;
+                                       size inputsize;
+                                       id string:maxlength_${fieldName};" />
+                characters remaining
+            </div>
+
+            <fieldset tal:condition="append_only">
+              <legend i18n:translate=""
+                      tal:define="label widget/label"
+                      tal:content="string:HISTORY: ${label}">
+                label
+              </legend>
+              <span i18n:translate=""
+                    tal:condition="python:(content_length &lt; 333)"
+                    tal:content="accessor">content</span>
+                    <textarea readonly="readonly" i18n:translate=""
+                              tal:condition="python:(content_length &gt;= 333)"
+                              tal:content="cell_value"
+                              tal:attributes="cols widget/cols;
+                                              rows widget/rows;">
+                      content
+                    </textarea>
+            </fieldset>
+
+      </tal:define>
+       
+      <!-- <metal:use use-macro="here/widgets/textarea/macros/area_edit"/> -->
+      
+      <!-- <metal:use use-macro="field_macro | here/widgets/field/macros/edit">
+        <input metal:fill-slot="widget_body"
+               type="text"
+               name=""
+               class="blurrable firstToFocus"
+               id=""
+               value=""
+               size="30"
+               tal:attributes="name  string:${fieldName}.${column}:records;
+                               id string:${column}_${fieldId};
+                               value cell_value;
+                               size widget/size;
+                               "
+               /> 
+      </metal:use>
+     -->
+      <!--
+      <input style="width: 100%" name="myfield.name:records" 
+                       tal:attributes="name string:${fieldName}.${column}:records;
+                                       id string:${column}_${fieldId};
+                                       value cell_value;
+                                       onchange eventHandler;
+                                       "
+                       type="text" />
+     -->
+      
+     </metal:edit_cell_macro>
+     <metal:define define-macro="myarea_edit">
+      <tal:define
+          define="base python:hasattr(value, 'isUnit');
+                  binary python:base and value.isBinary() or here.isBinary(fieldName);
+                  content python: not not base and value.getRaw() or value;
+                  content python: not binary and content or '';
+                  content_length python:len(content);
+                  append_only python: getattr(widget, 'append_only', None);
+                  maxlength python: getattr(widget, 'maxlength', None);
+                  keypress string:textCounter(this, this.form.textCounter_${fieldName}, ${maxlength});
+		  value cell_value;">
+
+        <textarea
+            class="blurrable firstToFocus"
+            tal:attributes="name  string:${fieldName}.${column}:records;
+                            id string:${column}_${fieldId};
+                            cols widget/cols;
+                            rows widget/rows;
+                            onkeydown python:test(maxlength, keypress, None);
+                            onkeyup python:test(maxlength, keypress, None);
+			    onchange eventHandler;"
+                            
+            tal:define="content python:not append_only and content or '';"
+            tal:content="content">content</textarea>
+
+            <div tal:condition="maxlength"
+                 i18n:translate="label_characters_remaining">
+                <input readonly="readonly"
+                       type="text"
+                       name=""
+                       maxlength="4"
+                       size="4"
+                       value=""
+                       i18n:name="count"
+                       tal:define="remaining python:(int(maxlength) - content_length) + content.count('\n');
+                                   inputsize string:4"
+                       tal:attributes="name string:textCounter_${fieldName};
+                                       value remaining;
+                                       maxlength inputsize;
+                                       size inputsize;
+                                       id string:maxlength_${fieldName};" />
+                characters remaining
+            </div>
+
+            <fieldset tal:condition="append_only">
+              <legend i18n:translate=""
+                      tal:define="label widget/label"
+                      tal:content="string:HISTORY: ${label}">
+                label
+              </legend>
+              <span i18n:translate=""
+                    tal:condition="python:(content_length &lt; 333)"
+                    tal:content="accessor">content</span>
+                    <textarea readonly="readonly" i18n:translate=""
+                              tal:condition="python:(content_length &gt;= 333)"
+                              tal:content="content"
+                              tal:attributes="cols widget/cols;
+                                              rows widget/rows;">
+                      content
+                    </textarea>
+            </fieldset>
+
+      </tal:define>
+    </metal:define>
+   <!-- EMPTY EDIT -->
+    <metal:edit_empty_cell_macro define-macro="edit_empty_cell">
+   <!--  <metal:use use-macro="here/widgets/datagrid_text_cell/macros/myarea_edit"/> -->
+      <!-- <input style="widget_body"
+               type="text"
+               name=""
+               class="blurrable firstToFocus"
+               id=""
+               value=""
+               size="30"
+               tal:attributes="name  string:${fieldName}.${column}:records;
+                               id string:${column}_${fieldId};
+			       cols widget/cols;
+                               rows widget/rows;
+			       value python: column_definition.getDefault(here);
+                               onchange eventHandler;
+			     
+                               "
+               />
+     -->
+  <!--       <metal:use use-macro="here/widgets/textarea/macros/area_edit"/> 
+     --> 
+    <!--   <input style="width: 100%" name="myfield.name:records" 
+                       tal:attributes="name string:${fieldName}.${column}:records;
+                                       id string:${column}_${fieldId};                                     
+                                       value python: column_definition.getDefault(here);
+                                       onchange eventHandler;
+                                       "
+                       type="text" />
+       -->
+     <tal:define
+          define="base python:hasattr(value, 'isUnit');
+                  binary python:base and value.isBinary() or here.isBinary(fieldName);
+                  content python: not not base and value.getRaw() or value;
+                  content python: not binary and content or '';
+                  content_length python:len(content);
+                  append_only python: getattr(widget, 'append_only', None);
+                  maxlength python: getattr(widget, 'maxlength', None);
+                  keypress string:textCounter(this, this.form.textCounter_${fieldName}, ${maxlength});
+		  value python: column_definition.getDefault(here);">
+
+        <textarea
+            class="blurrable firstToFocus"
+            tal:attributes="name  string:${fieldName}.${column}:records;
+                            id string:${column}_${fieldId};
+                            cols widget/cols;
+                            rows widget/rows;
+                            onkeydown python:test(maxlength, keypress, None);
+                            onkeyup python:test(maxlength, keypress, None);
+			    onchange eventHandler;
+			    "
+                            
+            tal:define="content python:not append_only and content or '';"
+            tal:content="value">content</textarea>
+
+            <div tal:condition="maxlength"
+                 i18n:translate="label_characters_remaining">
+                <input readonly="readonly"
+                       type="text"
+                       name=""
+                       maxlength="4"
+                       size="4"
+                       value=""
+                       i18n:name="count"
+                       tal:define="remaining python:(int(maxlength) - content_length) + content.count('\n');
+                                   inputsize string:4"
+                       tal:attributes="name string:textCounter_${fieldName};
+                                       value remaining;
+                                       maxlength inputsize;
+                                       size inputsize;
+                                       id string:maxlength_${fieldName};" />
+                characters remaining
+            </div>
+
+            <fieldset tal:condition="append_only">
+              <legend i18n:translate=""
+                      tal:define="label widget/label"
+                      tal:content="string:HISTORY: ${label}">
+                label
+              </legend>
+              <span i18n:translate=""
+                    tal:condition="python:(content_length &lt; 333)"
+                    tal:content="accessor">content</span>
+                    <textarea readonly="readonly" i18n:translate=""
+                              tal:condition="python:(content_length &gt;= 333)"
+                              tal:content="value"
+                              tal:attributes="cols widget/cols;
+                                              rows widget/rows;">
+                      content
+                    </textarea>
+            </fieldset>
+
+      </tal:define>
+       
+    </metal:edit_empty_cell_macro>
+    
+    
+
+</body>
+
+</html>
+

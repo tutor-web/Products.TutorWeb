@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<object name="QuizResult"
+   meta_type="Factory-based Type Information with dynamic views"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+ <property name="title">QuizResult</property>
+ <property name="description">Student result to a quiz in TutorWeb</property>
+ <property name="content_icon">file_icon.gif</property>
+ <property name="content_meta_type">QuizResult</property>
+ <property name="product">TutorWeb</property>
+ <property name="factory">addQuizResult</property>
+ <property name="immediate_view">newtype_view</property>
+ <property name="global_allow">False</property>
+ <property name="filter_content_types">True</property>
+ <property name="allowed_content_types">
+  <element value="QuestionResult"/>
+  <element value="InvisibleQuestion"/>
+ </property>
+ <property name="allow_discussion">False</property>
+ <property name="default_view">newtype_view</property>
+ <property name="view_methods">
+  <element value="newtype_view"/>
+ </property>
+ <property name="default_view_fallback">False</property>
+ <alias from="(Default)" to="(dynamic view)"/>
+ <alias from="edit" to="atct_edit"/>
+ <alias from="index.html" to="(dynamic view)"/>
+ <alias from="properties" to="base_metadata"/>
+ <alias from="sharing" to="folder_localrole_form"/>
+ <alias from="view" to="newtype_view"/>
+ <action title="View" action_id="view" category="object" condition_expr=""
+    url_expr="string:${object_url}/newtype_view" visible="True">
+  <permission value="View"/>
+ </action>
+ <action title="Edit" action_id="edit" category="object" condition_expr=""
+    url_expr="string:${object_url}/newtype_view" visible="True">
+  <permission value="Modify portal content"/>
+ </action>
+ <action title="Properties" action_id="metadata" category="object"
+    condition_expr="" url_expr="string:${object_url}/properties"
+    visible="True">
+  <permission value="Modify portal content"/>
+ </action>
+ <action title="References" action_id="references" category="object"
+    condition_expr="object/archetype_tool/has_graphviz"
+    url_expr="string:${object_url}/reference_graph" visible="True">
+  <permission value="Modify portal content"/>
+  <permission value="Review portal content"/>
+ </action>
+ 
+
+</object>

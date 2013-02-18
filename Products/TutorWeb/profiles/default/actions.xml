@@ -1,0 +1,48 @@
+<?xml version="1.0" ?>
+<object name="portal_actions" meta_type="Plone Actions Tool"
+	   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+<!-- PORTAL TABS !-->
+<object name="portal_tabs" meta_type="CMF Action Category">
+<!-- Add a tab for the about section -->   
+<object name="schools_classes" meta_type="CMF Action" i18n:domain="plone">
+<property name="title" i18n:translate="">Schools and Classes</property>
+<property name="description" i18n:translate=""></property>
+<property name="url_expr">string:$portal_url/schools-and-classes/schoolfolder_view</property>
+<property name="icon_expr"></property>
+<property name="available_expr"></property>
+<property name="permissions">
+<element value="View"/>
+</property>
+<property name="visible">True</property>
+</object>
+<!--
+<object name="object" remove="True">
+  <object name="print" remove="True"/>
+ </object>
+-->
+</object>
+</object> 
+<!--
+<object name="global_sections" meta_type="CMF Action Category">
+  <action-provider name="portal_workflow"/>
+  <action-provider name="portal_types"/>
+  <action-provider name="portal_actions"/>
+   <action-provider name="portal_tabs"/> -->
+ <!-- <object name="document_actions" meta_type="CMF Action Category"> -->
+<!--
+ <object name="portal_tabs" meta_type="CMF Action Category"
+   xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+    <property name="title" i18n:translate="">newtab</property> 
+    <property name="description" i18n:translate="some description" />
+    <property name="url_expr">string:$portal_url/@@folder_listing</property> 
+    <property name="link_target" /> 
+    <property name="icon_expr" /> 
+    <property name="available_expr"></property>       
+    <property name="permissions"> 
+      <element value="Modify portal content" /> 
+    </property> 
+    <property name="visible">True</property>  
+</object>
+</object>
+-->

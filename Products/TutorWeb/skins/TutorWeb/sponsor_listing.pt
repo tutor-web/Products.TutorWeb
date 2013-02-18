@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+   <div metal:fill-slot="main">
+     
+     <h1>
+		<span tal:replace="here/Title"/>
+        </h1>
+     <br>
+ <metal:view_macro define-macro="sponsorview">
+                   
+               
+	<metal:listingmacro define-macro="folderlisting">
+	<!-- <tal:foldercontents define="folderContents python:here.contentValues(filter={'portal_type': 'Tutorial'});
+		dummy python:folderContents.sort(lambda x,y:cmp(x.id, y.id));"> -->
+	<tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter = 
+                                    {'portal_type' : ['Sponsor']}, batch = True);">
+	<tal:listing condition="folderContents">
+	  
+	    
+	    <metal:block tal:repeat="obj folderContents">
+	     <tal:block tal:define="realobj obj/getObject;
+				    spurl   realobj/getSponsorurl;
+				    sptext realobj/getSponsortext;
+				    spimage realobj/getSponsorlogo;
+				    sptitle realobj/getTitle;
+                  "> 
+	       
+		<a href="spurl"> <!-- <img class="image-inline" src="spimage/image_preview" alt="sptitle" /> -->
+		   <metal:data use-macro="python:realobj.widget('sponsorlogo')"/></a>
+				
+		<br>
+	
+	      </tal:block> 
+	    </metal:block>
+	  
+	</tal:listing>
+	
+	</tal:foldercontents>
+	</metal:listingmacro>
+	</metal:view_macro>
+   </div>
+</body>
+</html>

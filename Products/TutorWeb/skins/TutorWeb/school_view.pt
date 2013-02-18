@@ -1,0 +1,99 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+<!-- <div metal:fill-slot="column_two_slot">
+     
+    </div> -->
+   <div metal:fill-slot="main">
+     
+     <h1>
+		<span tal:replace="here/Title"/>
+                 <metal:data use-macro="python:here.widget('databaseId')"/>
+                
+        </h1> 
+
+      <metal:listingmacro define-macro="folderlisting">
+        <tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter={'portal_type': 'Class', 'sort_on':'getId'});">
+	<tal:listing condition="folderContents">
+	    <table>
+	    <thead><tr>
+	    <!-- <th align="center"> Class Id </th> -->
+            <th align="center">Class Name</th>
+	    <th align="center">Instructor</th>
+	    <th align="center">Contact Information</th>
+            <th align="center">Start Date </th>
+            <th align="center">End Date </th>
+	    <th align="center">Enroll in Class</th>
+	    </tr></thead>
+            
+	    <metal:block tal:repeat="obj folderContents">
+              <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+				    realobj obj/getObject;
+				    "> 
+		 <tr tal:define="oddrow repeat/obj/odd"
+		     tal:attributes="class python:test(oddrow, 'even', 'odd')">
+	       <!--	<td tal:define="slid obj/getId">
+		  <id tal:content="slid"/>
+		</td> -->
+		<td metal:define-macro="listitem"
+		     tal:define="url obj/getURL;
+				 icon obj/getIcon;
+				  utool nocall:here/portal_url;
+		         ">
+		<a href="#" tal:attributes="href url">
+		    
+		     <img src="" alt=""
+			  tal:attributes="src string:${utool}/${icon};
+					  alt obj/Title"/>
+		</a>  
+		<a href="#" tal:attributes="href python:url"
+			    tal:content="obj/Title" />
+	       
+		</td> 
+	<td><metal:data use-macro="python:realobj.widget('Instructor')"/>  </td>
+        <td><metal:data use-macro="python:realobj.widget('ContactInformation')"/> </td>	
+        <td> <metal:data use-macro="python:realobj.widget('effectiveDate')"/>
+        </td> 
+		<td>	<metal:data use-macro="python:realobj.widget('expirationDate')"/>  </td>
+               
+	      <td>	<form name="submit" action="#" method="post"
+	     tal:define="url obj/getURL;
+                         here_url url;"
+	     tal:attributes="action python:here_url +'/class_enrollment'">
+		  
+		    
+		  <input 
+		  class="context"
+		  type="submit"
+		  name="get"
+		  value="Enroll"
+		  i18n:domain="plone"
+		  i18n:attributes="value"/> 
+       </form> </td>
+		</tr>
+              </tal:block>
+	    </metal:block>  
+	    </table>
+	</tal:listing> 
+	<p class ="discreet"
+	   tal:condition="not: folderContents"
+	   i18n:translate="description_no_slides_in_lecture">
+	   "There are currently no classes belonging to the school."
+	</p>
+	</tal:foldercontents> 
+ </metal:listingmacro>
+
+			
+	
+   </div>
+</body>
+</html>

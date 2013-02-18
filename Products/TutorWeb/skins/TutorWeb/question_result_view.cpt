@@ -1,0 +1,258 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone"
+      metal:use-macro="here/main_template/macros/master">
+ <body>
+  <!-- Must remember to set and unset the chosen question correctly -->
+ 
+
+   <metal:fill fill-slot="main"
+   tal:define="
+   
+   result           python:here.mymaybeMakeResult();
+   resultsView      python:True;
+   candidateId      python:result.getCreator();
+   member           context/@@plone_portal_state/member;
+   candidateName    python:member.getProperty('fullname');
+   creatorIsCurrent python:member.getId() == candidateId;
+   atLeastSubmitted python:1;
+   tut              python:here.aq_parent;
+   question         python:result.getChosenQuestion();
+   qdata            python:question.getQuestionData();
+   inlineanswer     python:question.inlineAnswer();
+   sessname         python:candidateId+'submit';
+   hasSomething     python:request.SESSION.get(sessname, False);
+   hasClosedAlready python:request.get('portal_status_message', '');
+   ">
+    <!--
+    <div metal:use-macro="here/document_actions/macros/document_actions">
+    Document actions (print, sendto, etc.)
+   </div>
+      -->
+    <tal:block define="hasquiz here/hasQuiz">
+                
+		<tal:block condition="hasquiz"> 
+			<tal:block define="url here/absolute_url;
+				   url1 python:url+'/lecture_results'">
+			<a href="#" tal:attributes="href url1" taget="_blank">
+			    <span> Grades </span>
+                        </a>
+                      </tal:block>
+                </tal:block>
+   </tal:block>
+   <br>
+   <br>
+   <tal:define define="action python: 'view';">
+   
+   </tal:define> 
+   
+    <tal:if_submitted condition="atLeastSubmitted">
+      <!-- The heading -->
+      <tal:if_has_not_clicked_quiz condition="python:hasClosedAlready=='Already answered'">
+        <span style="color:red;">
+       <p> You have already answered this question.</p>
+       <p>Remember to click only once when you submit an answer.</p>
+       <p>Please do not double-click the submit button </p>
+       </span>
+     </tal:if_has_not_clicked_quiz>
+      <tal:if_own_test condition="creatorIsCurrent">
+       <h2 i18n:translate="your_results">Your results:</h2>
+      </tal:if_own_test>
+      <tal:if_someone_elses_test condition="not: creatorIsCurrent">
+       <h2 i18n:translate="results_of_name">Results of
+        <span i18n:name="candidateName" tal:replace="candidateName"/>:</h2>
+      </tal:if_someone_elses_test>
+      
+      <tal:define_h_level define="headingLevel python:3;">
+	 <tal:if_submission_allowed condition="hasSomething">
+	   
+      <form
+        name="results"
+        action="#"
+        method="post"
+        tal:define="here_url context/@@plone_context_state/object_url;"
+        tal:attributes="action here_url">
+        <fieldset>
+          
+         <!-- List the question and answers -->
+        
+          <metal:block tal:define="candidatePoints python:result.getLastPoint();
+				   tmp              python:request.SESSION.set(sessname, False);
+          ">
+	<!-- Show candidate's achieved points -->
+	(<tal:if_graded condition="python:candidatePoints is not None">
+         
+          <span tal:replace="candidatePoints"/>
+        </tal:if_graded><tal:if_not_graded
+         condition="python:candidatePoints is None"
+         ><span tal:omit-tag="">Not graded</span
+	 ></tal:if_not_graded>/
+        <span
+         tal:replace="question/getPoints">possible points</span>)
+       </metal:block>
+   
+        
+       <br/>
+       <tal:block condition="python: not inlineanswer"> 
+         <table><tr>
+             <td>
+       <span tal:replace="structure qdata">
+                The question text.
+               </span>
+       </td>
+             <td tal:condition="imageurl"
+	       tal:define="imageurl python:question.getQuestImgUrl();">
+	       <a tal:condition="imageurl" tal:attributes="href string:${imageurl}">
+		 <img tal:attributes="src string:${imageurl}" alt="" width="225" height="151"/>
+		 </a>
+	      
+	      </td>
+              <td><block tal:condition="image"
+	           tal:define="image python:question.getQuestImg();
+                               ">
+<!--	      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}"> 
+-->
+              <a tal:condition="image">
+		          
+			    <img src="#" alt="" tal:replace="structure python:image.tag()"/>  
+			 
+		        </a>
+	      </block> 
+	    </td> </tr></table>
+       </tal:block>
+        <tal:block condition="inlineanswer">
+           <table><tr><td>
+	<span tal:replace="structure python:qdata[0]">
+                The question text.
+               </span>
+	
+	<metal:block use-macro="here/tutorwebanswerselection2/macros/answerview">answers</metal:block>
+	<span tal:replace="structure python:qdata[1]">
+                The question text.
+               </span>
+        </td>
+               <td tal:condition="imageurl"
+	       tal:define="imageurl python:question.getQuestImgUrl();">
+	       <a tal:condition="imageurl" tal:attributes="href string:${imageurl}">
+		 <img tal:attributes="src string:${imageurl}" alt="" width="225" height="151"/>
+		 </a>
+	      
+	      </td>
+         <td><block tal:condition="image"
+	           tal:define="image python:question.getQuestImg();
+                               ">
+	      <a tal:condition="image"> 
+			 
+		          
+			    <img src="#" alt="" tal:replace="structure python:image.tag()"/>  
+			 
+		        </a>
+	      </block> 
+	    </td> </tr></table>
+	</tal:block>
+           <!-- List the answers -->
+	   
+	   <metal:block use-macro="here/tutorwebanswerselectionresult/macros/edit">answers</metal:block>
+           
+          <metal:block use-macro="python:question.widget('quizQuestionExplanation')"/>
+          
+          <!-- <span tal:define="qexpl python:question.getShortExplanation();"
+                 tal:replace="structure qexpl"> 
+               <metal:block tal:define="qexpl python:question.getOriginalQuestion();
+
+                temp python:qexpl.getShortExample();">                        
+                 <p> <b> From original question </b> </p>
+                 <metal:data use-macro="python:qexpl.widget('quizQuestion')"/>
+                 <metal:data use-macro="python:qexpl.widget('quizQuestionExplanation')"/>
+                 </metal:block>
+                Short explanation to the question text. -->
+              <!-- </span> -->
+
+         </fieldset>
+       </form>
+      <table>
+	<td>
+       <form
+        name="submit"
+        action="#"
+        method="post"
+        tal:define="here_url context/@@plone_context_state/object_url;" 
+        tal:attributes="action python:here_url + '/question_submit'">
+      
+        
+         <input 
+		  class="context"
+		  type="submit"
+		  name="get"
+		  value="New question"
+                  onclick='if (this.form.onsubmit()) {
+                      this.form.submit();
+                       this.enabled=false;}'
+		  i18n:domain="plone"
+		  i18n:attributes="value"/>      
+           
+           <p style="color:green;">Remember to click only once when you ask for a new question.</p>
+            <block tal:define="qpath python:question.getOriginalQuestion().getPhysicalPath();
+                           stringp python:('/'.join(qpath));">
+           <p style="color:black;">If you think this is in error, please report the following to your instructor:</p>
+            <p style="color:blue;">
+           <span tal:replace="here/absolute_url">lecture url</span>
+          </p>
+            <p style="color:blue;">
+           <span tal:replace="stringp"> questiond </span>
+           </p>
+          </block>
+           
+     
+
+       </form>
+       </td>
+	<td>&nbsp;&nbsp; </td>
+  <!--     <td>
+       <tal:block define="hasquiz here/hasQuiz">
+                
+		<tal:block condition="hasquiz"> 
+			<tal:block define="url here/absolute_url;
+				   url1 url + '/lecture_results'">
+			<a href="#" tal:attributes="href url1" taget="_blank">
+			    <span> Grades </span>
+                        </a>
+                      </tal:block>
+                </tal:block>
+   </tal:block> 
+       </td>
+        -->
+       </table>
+        </tal:if_submission_allowed>
+      </tal:define_h_level>
+     </tal:if_submitted>
+      <tal:if_not_submitted condition="not: atLeastSubmitted">
+   
+      <!-- FIXME -->
+    
+      <p i18n:translate="test_not_submitted">
+       This quiz has not been submitted yet.
+      </p>
+     </tal:if_not_submitted>
+    
+   <tal:if_submission_not_allowed condition="python: not hasSomething">
+     <p> You have not submitted any question yet, use the quiz buttom in lecture or quiz view to take a quiz </p>
+   </tal:if_submission_not_allowed>
+  </metal:fill>
+ </body>
+</html>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode:xml
+sgml-local-catalogs:("/usr/local/lib/sgml/XHTML11.cat")
+sgml-validate-command:"xmllint \\-\\-valid \\-\\-noout %s %s"
+sgml-indent-step:1
+sgml-indent-data:t
+indent-tabs-mode:nil
+fill-column:79
+End:
+-->

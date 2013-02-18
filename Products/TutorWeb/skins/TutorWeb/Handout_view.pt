@@ -1,0 +1,52 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <head><title></title></head>
+
+
+  <body>
+    <style>
+
+</style> 
+
+    <tal:tut tal:replace="nothing"> remove siteactions
+        <div metal:use-macro="here/global_siteactions/macros/site_actions">
+               Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
+             </div>
+    </tal:tut>
+    <div metal:fill-slot="column_two_slot">
+
+     
+    </div>
+    <div metal:fill-slot="main">
+       <metal:main-macro define-macro="main"   
+           tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                  templateId template/getId;
+				  newslides python:here.aq_parent.getFolderContents(contentFilter={'portal_type':['Slide'],'sort_on':'getId'});
+				  sibl python:[p for p in newslides];
+				  num_sibl python:len(sibl);
+				  pos python:[i for i in range(num_sibl) if sibl[i].getId == here.getId()][0];">
+
+	<h1>
+	  <!-- <metal:data use-macro="here/kss_generic_macros/macros/generic_title_view"/> -->
+	  <!-- <metal:use-macro="here/kss_generic_macros/macros/generic_title_view"/> -->
+            Handout  -
+	    <span tal:replace="here/Title"/>
+        </h1>
+	
+           
+	   		<metal:data use-macro="python:here.widget('HandoutView')"/>	      	      
+
+       
+
+      </metal:main-macro> 
+    </div>
+  </body>
+</html>

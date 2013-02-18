@@ -1,0 +1,291 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="TutorWeb"
+      metal:use-macro="here/main_template/macros/master">
+ <body>
+   <div metal:fill-slot="column_one_slot">
+     </div>
+    
+<!--     <div metal:fill-slot="column_two_slot">
+    </div> -->
+  <metal:block fill-slot="css_slot">
+   <style type="text/css" media="screen" tal:content="string: @import url($portal_url/tutorwebstyles.css);"></style>
+  </metal:block>
+<link href="tutorwebstyles.css" rel="stylesheet" type="text/css">
+
+  <metal:fill fill-slot="main">
+ <!--  <div metal:use-macro="here/document_actions/macros/document_actions">
+    Document actions (print, sendto, etc.)
+   </div> -->
+   <h1>
+		<span tal:replace="here/Title"/>
+        </h1>
+     <br>
+
+   
+        
+  <metal:view_macro define-macro="tutorialview">
+     
+    <tal:block define="hasquiz here/hasQuiz;
+			   hasQuest here/hasQuestions;">
+                
+		<block tal:condition="hasquiz">
+		  <table>
+		  <tr>
+		       
+		
+		<td tal:condition="hasQuest">
+                     
+	       <form name="submit" action="#" method="post"
+                    tal:define="here_url context/@@plone_context_state/object_url;"	      
+	            tal:attributes="action python:here_url +'/question_submit'" target="main">
+		  
+		    
+		  <input 
+		  class="context"
+		  type="submit"
+		  name="get"
+		  value="Quiz"
+		  i18n:domain="plone"
+		  i18n:attributes="value"/> 
+       </form>
+	       </td>
+		<td>&nbsp&nbsp&nbsp&nbsp</td>
+		<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/lecture_slides_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Slide Material
+                    </a>
+		  </td>
+
+                <td>&nbsp&nbsp&nbsp&nbsp</td>
+		<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/lecture_grades_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Student Grades
+                    </a>
+		  </td>
+		
+		<td>&nbsp&nbsp&nbsp&nbsp</td>
+		<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+                   <p> Grades file </p>
+		   <metal:data use-macro="python:here.widget('LectureGrades')"/>
+		  </td>
+		
+			</tr>
+		  </table>
+                </block>
+		
+        </tal:block>
+    <HR/>
+
+   
+        
+             
+   <tal:define_globals define="
+    logged           python:here.isLoggedOn();                           
+    user            python:{'user_id' : request.get('user_id', None),
+                               'state'   : request.get('state', None),
+                       };
+    username          python:user.items();
+    usern             python:user['user_id'];
+    usern1            python:username[1][1];
+    member            context/@@plone_portal_state/member;
+    candidateId       python:member.getId();
+    isteacher         python:here.canSeeQuestions();
+    fullname          python:member.getProperty('fullname');
+    membership        context/portal_membership;
+    info1             python:membership.getMemberInfo(usern);
+    fullnamen         info1/fullname;
+   
+    "
+    >
+     <div tal:condition="python:not logged"
+          tal:define="myurl string:${here/absolute_url};
+                      logurl python:portal_url+'/acl_users/credentials_cookie_auth/require_login?came_from='+myurl+'/lecture_results'">
+          <div tal:attributes="action python:here.redirect(logurl)"/> 
+       
+      </div> 
+      <div tal:condition="python:(not isteacher) and (usern is not None) and (not(usern == candidateId))">
+         <div tal:attributes="action python:here.redirect('notallowed')"/> 
+     </div>
+
+     <div tal:condition="logged">
+       	<ul id="portal-globalnav"
+            tal:define="URL here/absolute_url">
+           <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_view'">
+            
+                    Slides
+                    
+                </a>
+            
+            </li>
+      <li tal:condition="isteacher">
+	  <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_questions'">
+            
+                    Questions
+                    
+                </a>
+	</li>
+       <li tal:condition="haveExtraMaterial" 
+		    tal:define="haveExtraMaterial here/haveExtraDataFile;
+				"> 
+		  <a href="#" tal:attributes="href python:URL+'/lecture_extradata'">
+			    <span> Extra Data </span>
+                        </a>
+		   
+       </li>
+       <li class="selected">
+		 
+	     <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_results'">
+                Quiz Results
+                    
+                    
+                </a>
+            
+            </li>
+	    </ul>
+     <div class="left"
+          tal:condition="isteacher">
+
+  <dl id="portlet-navigation"
+    class="portlet portletNavigationTree"  
+    >
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#" 
+           class="tile"
+           tal:attributes="href string:${here/absolute_url}/sitemap" 
+           i18n:translate="box_navigation">Students</a>
+    </dt>
+    <br>
+  
+        
+    <block tal:condition="students"
+           tal:define="students here/getParticipants">
+    
+      <li tal:repeat="ref students">
+			<block
+			   tal:define="URL python:'lecture_results?user_id='+ref">
+		      <a href="#" tal:attributes="href python:URL"
+			    tal:content="ref" />
+		      </block>
+     </li>
+      
+    </block>
+    </dl> 
+</div>
+     
+<div class="middle">
+      <block tal:condition="python:usern==None">
+	  <h2> Quiz results for <span tal:replace="fullname"/> </h2>
+     </block>
+     <block tal:condition="python:not(usern==None)"> 
+	<h2> Quiz results for <span tal:replace="fullnamen"/> </h2>
+     </block> 
+    
+               <table class="listing">
+	         <thead><tr>
+                 <th>Lecture</th>
+	         <th>Grade</th>
+	         <th>Correct</th>
+	         <th>Attempts</th>
+	         <th>Last eight answers </th>
+	         </tr></thead>
+	        
+	           <span tal:define="item_url here/getURL|here/absolute_url;     
+                                     res      python:here.hasSubmitted(candidateId, usern);
+                                    
+				     
+				    
+                  "> 
+	           <!-- res/studentgrade; -->
+	             <tal:block condition="res">
+                       <block tal:define="
+                                          resobj    python:res.getObject(); 
+                                     temp            python:resobj.computeGrade1('0'); 
+				     numAttempts     res/quizattempts;
+				     numCorrect      res/correctquizattempts;
+                                     score           python:resobj.getTotscore();
+				     sc       	     res/lasteight;
+				     lectitle        here/getTitle
+                                     "> 
+	               <tr>
+	                 <td>
+		           <span tal:replace="lectitle"/></td>
+	                 <td><span tal:replace="score"/></td>
+	                 <td><span tal:replace="numCorrect"/></td>
+	                 <td><span tal:replace="numAttempts"/></td>
+	                 <td> <span tal:replace="sc"/> </td>
+	      
+	               </tr>
+                       </block>
+	             </tal:block>
+	          
+                  <span tal:condition="python: (not res)">
+                       <tr>
+	                 <td><span tal:replace="here/Title"/></td>
+                       <td> No questions submitted to quiz </td>
+                       <td> 0 </td>
+                       <td> 0 </td>
+                       <td> 0 </td>
+                       </tr>
+                 </span>
+	   
+	   </span>
+      </table>
+      <!-- but only for admin, teacher -->
+       
+      <a tal:condition="python:not(usern==None)"
+         tal:attributes="href string:${context/absolute_url}/@@quizinfo?user_id=${usern}">
+         Submitted Quiz Questions
+      </a>
+      <a tal:condition="python:(usern==None)"
+         tal:attributes="href string:${context/absolute_url}/@@quizinfo">
+         Submitted Quiz Questions
+      </a>
+   </div>
+     
+
+
+
+</div>				     
+				    
+      
+   </tal:define_globals>
+   </metal:view_macro>
+  
+  </metal:fill>
+ </body>
+</html>
+<!-- Keep this comment at the end of the file
+Local variables:
+mode:xml
+sgml-local-catalogs:("/usr/local/lib/sgml/XHTML11.cat")
+sgml-validate-command:"xmllint \\-\\-valid \\-\\-noout %s %s"
+sgml-indent-step:1
+sgml-indent-data:t
+indent-tabs-mode:nil
+fill-column:79
+End:
+-->

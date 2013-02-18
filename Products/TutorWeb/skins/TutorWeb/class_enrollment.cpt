@@ -1,0 +1,62 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head>
+    <metal:block fill-slot="top_slot"
+                 tal:define="dummy python:request.set('disable_border',1)" />
+    <metal:block fill-slot="column_one_slot" />
+    <metal:block fill-slot="column_two_slot" />
+</head>
+
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="errors options/state/getErrors;
+                 site_properties context/portal_properties/site_properties;
+		 logged           python:here.isLoggedOn();   
+                 ">
+  <div tal:condition="python:not logged"
+          tal:define="myurl string:${here/absolute_url};
+                      logurl python:portal_url+'/acl_users/credentials_cookie_auth/require_login?came_from='+myurl+'/class_enrollment'">
+          <div tal:attributes="action python:here.redirect(logurl)"/> 
+       
+      </div> 
+  <div tal:condition="logged">
+  <h1 class="documentFirstHeading"
+      i18n:translate="heading_registration_form">Enroll in <span tal:replace="here/Title"/></h1>
+   <form>
+  <table><tr>
+      <td>
+      <div class="formControls">
+        <input class="context"
+               type="submit"
+               name="form.button.Register"
+               value="Register"
+               i18n:attributes="value label_register"
+	       />
+      </div></td>
+	 <td>
+      <div class="formControls">
+        <input class="context"
+               type="submit"
+               name="form.button.Cancel"
+               value="Cancel"
+	       tabindex=""
+               i18n:attributes="value label_register;"
+	       />
+      </div></td>
+	 </tr></table>
+
+    <input type="hidden" name="form.submitted" value="1" />
+
+  </form>
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,365 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+  <head><title></title></head>
+
+
+  <body>
+    <style>
+
+</style> 
+<!--
+  <metal:footer use-macro="here/footer/macros/portal_footer">
+          Footer
+   </metal:footer>
+
+   
+    <tal:remove tal:replace="nothing"> Remove navigation portlet
+       <div metal:use-macro="/here/portlet_navigation/macros/portlet">
+       </div>
+    </tal:remove>
+    <div metal:fill-slot="portlets_one_slot">
+       
+    </div>
+-->
+    <tal:tut tal:replace="nothing"> remove siteactions
+        <div metal:use-macro="here/global_siteactions/macros/site_actions">
+               Site-wide actions (Contact, Sitemap, Help, Style Switcher etc)
+             </div>
+    </tal:tut>
+    <div metal:fill-slot="column_two_slot">
+      <!-- <div tal:replace="structure provider:plone.belowcontenttitle"/> -->
+     
+    </div>
+    <div id="slide_view">
+    <div metal:fill-slot="main">
+     
+                      
+
+        <metal:main-macro define-macro="main"   
+           tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                  templateId template/getId;
+				  newslides python:here.aq_parent.getFolderContents(contentFilter={'portal_type':['Slide'],'sort_on':'getId'});
+				  sibl python:[p for p in newslides];
+				  num_sibl python:len(sibl);
+				  pos python:[i for i in range(num_sibl) if sibl[i].getId == here.getId()][0];">
+
+	<h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
+            Title or id
+        </h1>
+         <table class="listtop">
+        <td><tal:block define="url here/absolute_url">
+        <a href="" tal:attributes="href python:url+'/teacher_view'"> 
+		         Teacher View &nbsp;     
+		</a></tal:block></td>
+	<td> &nbsp;&nbsp; </td>
+			<td tal:condition="allowedit"
+			    tal:define="url1 here/absolute_url;
+					allowedit here/canEdit">
+			 
+			<a class="updatetransformable" href="#"
+			   tal:attributes="href here/absolute_url">
+			  Update  &nbsp; 
+			  </a>
+			
+		 </td> 
+		<td>
+		   <tal:block condition="slideimagetext"
+			      define="slideimagetext python:here.getSlideImageText();
+				      url here/absolute_url">
+		     <a href="" tal:attributes="href python:url+'/SlideImageText'"> 
+		         Image Text &nbsp;     
+		</a></tal:block> </td>
+		<td>
+		   <tal:block condition="explnimagetext"
+			      define="explnimagetext python:here.getExplanationImageText();
+				      url here/absolute_url">
+		     <a href="" tal:attributes="href python:url+'/ExplanationImageText'"> 
+		         Explanation Image Text &nbsp;     
+		</a></tal:block> </td>
+          
+	</table>
+       
+	<table class="listextras">
+	
+	 <td tal:define="url here/Examples/absolute_url;
+			 url1 here/Alternative/absolute_url;
+			 url2 here/Details/absolute_url;
+			 url3 here/Handout/absolute_url;
+			 url4 here/absolute_url;
+			 deta here/RawDetails;
+			 hand here/RawHandout;
+			 exam here/RawExamples;
+			 alte here/RawAlternative;
+			 ">
+	        <tal:block condition="exam">
+		 
+		  <a href="" tal:attributes="href python:url4 + '/Examples_view'" onclick="window.open(href, 'popup','width=600,height=700,scrollbars=yes,resizable=yes,toolbar=no,directories=no,location=no,menubar=no,status=no,left=50,top=0'); return false">Examples &nbsp;</a>
+		</tal:block>
+		<tal:block condition="python:not exam"> 
+		         Examples &nbsp;
+		</tal:block>
+		<tal:block condition="alte">
+		 
+		  <a href="" tal:attributes="href python:url4 + '/Alternative_view'" onclick="window.open(href, 'popup','width=600,height=700,scrollbars=yes,resizable=yes,toolbar=no,directories=no,location=no,menubar=no,status=no,left=50,top=0'); return false">Alternative &nbsp;</a>
+		</tal:block>
+		<tal:block condition="python:not alte">    
+	          	  Alternative &nbsp;
+		</tal:block>
+		<tal:block condition="deta">
+		  
+		  <a href="" tal:attributes="href python:url4 + '/Details_view'" onclick="window.open(href, 'popup','width=600,height=700,scrollbars=yes,resizable=yes,toolbar=no,directories=no,location=no,menubar=no,status=no,left=50,top=0'); return false">Details &nbsp;</a>
+		</tal:block>
+		<tal:block condition="python:not deta">    
+	          	  Details &nbsp;
+		</tal:block>
+		<tal:block condition="hand">
+		  
+		  <a href="" tal:attributes="href python:url4 + '/Handout_view'" onclick="window.open(href, 'popup','width=600,height=700,scrollbars=yes,resizable=yes,toolbar=no,directories=no,location=no,menubar=no,status=no,left=50,top=0'); return false">Handout &nbsp;</a>
+	        </tal:block>
+		<tal:block condition="python:not hand">    
+	          	  Handout &nbsp;
+		</tal:block>
+		
+		
+		
+		      
+	</td>
+	</table>
+	<div class="listingBar"
+	     tal:condition="python: next or prev"
+	     tal:define="next python:pos < num_sibl-1;
+	        prev python:pos != 0;">
+	     <span>
+		   <a class="listingNext"
+		      tal:define="n python:pos+1;
+		                 nextsib python:sibl[n%num_sibl]"
+		      tal:attributes="href python:nextsib.getURL()"
+		      tabindex="1"
+		      href="">
+		      <span il18n:translate="label_next">
+		         Next: </span>
+		      <span tal:replace="nextsib/Title"/>
+                    </a>
+              </span>
+	   
+	      <span tal:condition="python:pos > 0">
+		    <a class="listingPrevious"
+		       tal:define="prevsib python:sibl[pos-1]"
+		       tal:attributes="href python:prevsib.getURL()"
+		       tabindex="2"
+		       href="">
+                       <span il8n:translate="label_previous">
+		       Previous: </span>
+		       <span tal:replace="prevsib/Title" />
+		    </a>
+	      </span>
+	  
+	      <span tal:condition="python:pos == 0">
+		    <a class="listingPrevious"
+		       tal:define="prevsib python:sibl[num_sibl-1]"
+		       tal:attributes="href python:prevsib.getURL()"
+		       tabindex="2"
+		       href="">
+                       <span il8n:translate="label_previous">
+		       Previous: </span>
+		       <span tal:replace="prevsib/Title" />
+		    </a>
+	      </span>
+	    
+	</div>
+ 
+	<br>
+	<br>
+      
+    <div tal:replace="structure provider:plone.belowcontenttitle"/>
+<!--	<p> before mainform </p>
+        <table class="mainform"
+		  tal:define="typeofimage here/getSlideImageFormat;
+			      maintext here/SlideTextRaw;
+			      mainimag here/getSlideImage;
+			      
+			      ">
+	        
+		
+		
+		
+	       <tr>
+		<tal:block condition="python:mainimag and maintext">
+	        <COLGROUP>
+		  <COL width="50%"/>
+		  <COL width="50%"/>
+                </COLGROUP>
+	
+		<td>
+		  -->
+		<!--	<div tal:replace="structure provider:plone.belowcontenttitle"/>	<p> slide text view </p> -->
+			<!-- <metal:data use-macro="python:here.widget('SlideTextView')"/> -->
+			
+	<!--
+	     </td>
+		<td> <p> slide text </p> <metal:data use-macro="python:here.widget('SlideText')"/> </td>
+             <td>
+	       <table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('SlideImageCaption')"/></caption>
+		 <tr><td>
+                      <tal:block
+		      define="image python:here.getSlideImage();
+		      photo_display python:'maxi';
+		      im python:here.getSlideImageWWW();
+		      ">
+		        <tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>
+		
+			<a tal:condition="image" tal:attributes="href string:${image/absolute_url}"> 
+			 
+		          <block tal:define="im python:here.getSlideImageWWW()">
+			    <img src="#" alt="" tal:replace="structure python:im.tag()"/>  
+			  </block>
+		        </a>
+		      </tal:block>
+                 </td></tr>
+	       </table>
+             </td>
+             </tal:block>
+	     <tal:block condition="python:maintext and (not mainimag)">	
+	     -->  <!--
+	       <td><metal:block use-macro="here/tutorwebanswerselection3/macros/answerview1">download link</metal:block> </td>
+                 -->
+	<!--
+	<td> <p> slide text </p> <metal:data use-macro="python:here.widget('SlideText')"/> </td>	 
+             </tal:block>
+	     <tal:block condition="python:mainimag and (not maintext)">	
+                 <td>
+		<table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('SlideImageCaption')"/></caption>
+		 <tr><td>
+		   <tal:block
+		      define="image python:here.getSlideImage();
+		      photo_display python:'maxi';
+		      im python:here.getSlideImageWWW()">
+		     <tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}"
+		       tal:define="im python:here.getSlideImageWWW()">
+                             						   
+			    <img src="#" alt="" tal:replace="structure python:im.tag()"/>  
+			  
+			
+		      </a>
+		    
+		</tal:block>
+		   </td></tr>
+	       </table>
+	     </td>
+             </tal:block>
+	     
+		
+     </tr>
+          
+        </table>
+       
+     
+    
+        <br>
+	<hr width=150%>
+	<br>
+	
+
+	<table class="explanationform"
+		  tal:define="typeofexplimage here/getExplanationImageFormat;
+			      expltext here/ExplanationRaw;
+			      explimag here/getExplanationImage;
+			      
+			      ">
+	        
+		
+		
+		
+	       <tr>
+		<tal:block condition="python:explimag and expltext">
+	        <COLGROUP>
+		  <COL width="50%"/>
+		  <COL width="50%"/>
+                </COLGROUP> 
+			<td> <metal:data use-macro="python:here.widget('ExplanationView')"/> </td>
+		<td>
+			<metal:data use-macro="python:here.widget('Explanation')"/>
+	
+	     </td>
+             <td>
+                 <table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('ExplanationImageCaption')"/></caption>
+		 <tr><td>     
+	       <tal:block define="image python:here.getExplanationImage();
+		      photo_display python:'maxi';
+		      im python:here.getExplanationImageWWW();">
+			<tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>	
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+		     
+			<block tal:define="im python:here.getExplanationImageWWW()">
+			   <img src="#" alt="" tal:replace="structure python:im.tag()"/> 
+			   
+			 </block>
+			
+		      </a>
+		      </tal:block>
+                  
+                  </td></tr>
+	       </table>
+             </td>
+             </tal:block>
+	     <tal:block condition="python:expltext and (not explimag)">	-->
+	     <!--  <td><metal:block use-macro="here/tutorwebanswerselection3/macros/answerview2">download link</metal:block> </td> -->
+	      <!-- <td> <metal:data use-macro="python:here.widget('ExplanationView')"/> </td> -->
+                <!-- <td>
+			<metal:data use-macro="python:here.widget('Explanation')"/>
+	
+	     </td>
+             </tal:block>
+	     <tal:block condition="python:explimag and (not expltext)">	
+                 <td>
+		<table class="image">
+		 <caption align="bottom"><metal:data use-macro="python:here.widget('ExplanationImageCaption')"/></caption>
+		 <tr><td>
+		   <tal:block
+		      define="image python:here.getExplanationImage();
+		      photo_display python:'maxi';
+		      im python:here.getExplanationImageWWW(); ">
+		     <tal:block tal:condition="python:not im"
+			        tal:define="temp python:here.setSlideImageW();
+					    "/>	
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+		     
+		      <block tal:define="im python:here.getExplanationImageWWW()">
+			   <img src="#" alt="" tal:replace="structure python:im.tag()"/>  
+			 </block>
+		      </a>
+		      </tal:block>
+		    </td></tr>
+	       </table>
+	     </td>
+             </tal:block>
+	     
+		
+     </tr>
+          
+        </table>
+
+        -->
+      </metal:main-macro> 
+    </div>
+    </div>
+  </body>
+</html>

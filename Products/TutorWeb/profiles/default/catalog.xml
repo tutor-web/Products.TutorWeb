@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<object name="portal_catalog" meta_type="Plone Catalog Tool">
+   <column value="studentgrade"/>
+  <index name="studentgrade" meta_type="FieldIndex">
+    <indexed_attr value="studentgrade"/>
+ </index>
+ <column value="lasteight"/>
+  <index name="lasteight" meta_type="FieldIndex">
+    <indexed_attr value="lasteight"/>
+ </index>
+ <column value="quizattempts"/>
+  <index name="quizattempts" meta_type="FieldIndex">
+    <indexed_attr value="quizattempts"/>
+ </index>
+ <column value="correctquizattempts"/>
+  <index name="correctquizattempts" meta_type="FieldIndex">
+    <indexed_attr value="correctquizattempts"/>
+ </index>
+ <column value="to_randomize"/>
+ <index name="to_randomize" meta_type="FieldIndex">
+    <indexed_attr value="to_randomize"/>
+ </index>
+ <column value="to_randomize"/>
+ <index name="is_correct" meta_type="FieldIndex">
+    <indexed_attr value="is_correct"/>
+ </index>
+ <column value="answerlist"/>
+  <index name="answerlist" meta_type="FieldIndex">
+    <indexed_attr value="answerlist"/>
+ </index>
+ <column value="answerlist"/>
+</object>

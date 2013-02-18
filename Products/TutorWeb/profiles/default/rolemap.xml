@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<rolemap>
+  <permissions>
+    <permission name="TutorWeb: Add Quiz"
+             acquire="False">
+      <role name="Manager"/>
+      <role name="Owner"/>
+    </permission>   
+    <permission name="TutorWeb: Grade Assignments"
+             acquire="False">
+      <role name="Manager"/>
+    </permission>
+    <permission name="TutorWeb Access Contents"
+             acquire="False">
+      <role name="Authenticated"/>
+      <role name="PERMISSION_STUDENT"/>
+    </permission>   
+  </permissions>
+</rolemap>

@@ -1,0 +1,324 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+  <div metal:fill-slot="column_one_slot">
+    </div>
+<!--  <div metal:fill-slot="column_two_slot">
+    </div> -->
+    <metal:block fill-slot="css_slot">
+   <style type="text/css" media="screen" tal:content="string: @import url($portal_url/tutorwebstyles.css);"></style>
+  </metal:block>
+   <div metal:fill-slot="main">
+   <metal:main-macro define-macro="main"
+                      tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                  templateId template/getId">
+     
+	<h1>
+		<span tal:replace="here/Title"/>
+        </h1>
+       
+        
+     
+        <tal:block define="hasquiz here/hasQuiz;
+			   hasQuest here/hasQuestions;">
+                <table>
+		  <tr>
+		   
+		<block tal:condition="hasquiz">
+		 
+		       
+		
+		<td tal:condition="hasQuest">
+                     
+	       <form name="submit" action="#" method="post"
+		     tal:define="here_url context/@@plone_context_state/object_url;"	     
+		     tal:attributes="action python:here_url +'/question_submit'" target="main">
+		  
+		    
+		  <input 
+		  class="context"
+		  type="submit"
+		  name="get"
+		  value="Quiz"
+		  onclick='if (this.form.onsubmit()) {
+			   this.form.submit();
+			   this.enabled=false;}'
+		  i18n:domain="plone"
+		  i18n:attributes="value"/> 
+       </form>
+	       </td>
+		<td>&nbsp&nbsp&nbsp&nbsp</td>
+		<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/lecture_slides_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Slide Material
+                    </a>
+		  </td>
+		
+	
+
+		
+		   
+		<td></td>	
+		 
+                </block>
+		
+		 <td> <metal:data use-macro="python:here.widget('Pdf')"/> </td>
+		 <td>&nbsp&nbsp&nbsp&nbsp</td>
+		 
+		<td tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/lecture_pdf_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Pdf Material
+                    </a>
+		  </td>
+          </tr>
+	 </table>	
+        </tal:block>
+	<HR/>
+	<!--
+	 <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
+            Title or id
+        </h1> -->
+	  <br>
+      <tal:seequestions tal:define="seeQuestions here/canSeeQuestions;">
+	
+   	<ul id="portal-globalnav"
+	    tal:define="URL here/absolute_url">
+           <li class="selected">
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_view'">
+            
+                    Slides
+                    
+                </a>
+            
+            </li>
+	<li tal:condition="seeQuestions"> 
+	  <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_questions'">
+            
+                    Questions
+                    
+                </a>
+	</li>
+	<li tal:condition="python:(seeQuestions and hasSelectionParameters)"
+	    tal:define="hasSelectionParameters python:here.getQuestionSelectionParameters();"> 
+	  <a class="" href=""
+	           tal:define="objid hasSelectionParameters/id"
+                   tal:attributes="href python:URL+'/'+objid">
+            
+                    Questions Selection Parameters
+                    
+                </a>
+	</li>
+       <li tal:condition="haveExtraMaterial" 
+		    tal:define="haveExtraMaterial here/haveExtraDataFile;"> 
+		  <a href="#" tal:attributes="href python:URL+'/lecture_extradata'">
+			 <span>   Extra Data </span>
+                        </a>
+		   
+       </li>
+       
+       <li>
+	 <a class="" href=""
+                   tal:attributes="href python:URL+'/lecture_results'">
+            
+                    Quiz Results
+                    
+                </a>
+            
+            </li>
+        </ul>
+        <hr>
+	<div class="left">
+
+	  <dl id="portlet-navigation"
+	      class="portlet portletNavigationTree"  
+	      >
+	 <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#" 
+           class="tile"
+           tal:attributes="href string:${here/absolute_url}/sitemap" 
+           i18n:translate="box_navigation">Lectures</a>
+    </dt>
+    <br>
+    <block tal:condition="lecContents"
+           tal:define="lecContents python:here.aq_parent.getFolderContents(contentFilter={'portal_type': 'Lecture','sort_on':'getId'});">
+    
+      <li tal:repeat="obj lecContents">
+	<block tal:define="url obj/getURL;
+		       ">
+		<a href="#" tal:attributes="href url"
+			    tal:content="obj/getId">
+		  </a>
+	       
+		</block>				
+     </li>
+      
+    </block> 
+    </dl> 
+</div>
+<div class="middle">
+  
+      <metal:listingmacro define-macro="folderlisting">
+        <tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter={'portal_type': 'Slide', 'sort_on':'getId'});">
+	<tal:listing condition="folderContents">
+	    <table class="listing">
+	    <thead><tr>
+	    <th tal:condition="seeQuestions" 
+		    align="center"> Slide Id </th>
+            <th align="center">Slide Name</th>
+	    <div tal:repeat="field_name here/getTableHeadings">
+		 <th tal:content="field_name"> name </th>
+	    </div> 
+	    </tr></thead>
+            
+	    <metal:block tal:repeat="obj folderContents">
+              <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+				     "> 
+		 <tr tal:define="oddrow repeat/obj/odd"
+		     tal:attributes="class python:test(oddrow, 'even', 'odd')">
+		<td tal:condition="seeQuestions"
+		    tal:define="slid obj/getId">
+		  <id tal:content="slid"/>
+		</td>
+		<td metal:define-macro="listitem"
+		     tal:define="url obj/getURL;
+				 icon obj/getIcon;
+				  utool nocall:here/portal_url;
+		         ">
+		<a href="#" tal:attributes="href url">
+		    
+		     <img src="" alt=""
+			  tal:attributes="src string:${utool}/${icon};
+					  alt obj/Title"/>
+		</a>  
+		<a href="#" tal:attributes="href python:url"
+			    tal:content="obj/Title" />
+	       
+		</td> 
+		 <tal:block define="realobj obj/getObject; 
+				    deta realobj/RawDetails;
+				     hand realobj/RawHandout;
+				     exam realobj/RawExamples;
+				     hasexam python:len(exam) > 0;
+				     alte realobj/RawAlternative;
+				     url1 realobj/absolute_url;
+				     ">
+		
+		<!-- <td tal:repeat="field_name here/getTableHeadings"
+		    tal:define="url1 obj/absolute_url;
+				"> -->
+		<td>
+		  
+		  <tal:block condition="exam">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/>    
+	          	  -->
+		        <a href="#" tal:attributes="href python:url1+'/Examples_view'" target="_blank" 
+		          tal:content="python:'Examples'"/>  
+		   </tal:block>
+		  <tal:block condition="python:not exam">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/> -->    
+	          	  Examples
+		   
+		        
+		   </tal:block>
+		</td>
+		<td>
+		  <tal:block condition="alte">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/>    
+	          	  -->
+		        <a href="#" tal:attributes="href python:url1+'/Alternative_view'" target="_blank" 
+		          tal:content="python:'Alternative'"/>  
+		   </tal:block>
+		  <tal:block condition="python:not alte">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/> -->    
+	          	  Alternative
+		   
+		        
+		   </tal:block>
+		  
+	 	</td>
+		<td>
+		  <tal:block condition="deta">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/>    
+	          	  -->
+		        <a href="#" tal:attributes="href python:url1+'/Details_view'" target="_blank" 
+		          tal:content="python:'Details'"/>  
+		   </tal:block>
+		  <tal:block condition="python:not deta">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/> -->    
+	          	  Details
+		   
+		        
+		   </tal:block>
+		 </td>
+			
+		<td>
+		  <tal:block condition="hand">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/>    
+	          	  -->
+		        <a href="#" tal:attributes="href python:url1+'/Handout_view'" target="_blank" 
+		          tal:content="python:'Handout'"/>  
+		   </tal:block>
+		  <tal:block condition="python:not hand">  
+	           <!--<a href="#" tal:attributes="href python:url1+'/'+field_name+'_view'" target="_blank" 
+		          tal:content="field_name"/> -->    
+	          	  Handout
+		   
+		  </tal:block>      
+		   
+		 </td>
+		
+		</tal:block>
+		</tr>
+              </tal:block>
+	    </metal:block>  
+	    </table>
+	</tal:listing> 
+	<p class ="discreet"
+	   tal:condition="not: folderContents"
+	   i18n:translate="description_no_slides_in_lecture">
+	   "There are currently no slides belonging to the lecture."
+	</p>
+	</tal:foldercontents> 
+	
+	
+      </metal:listingmacro>
+      </div>
+      <!-- Set the get question form -->
+      
+    </tal:seequestions>     
+      
+      </metal:main-macro>
+   </div>
+</body>
+</html>

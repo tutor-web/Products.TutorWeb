@@ -1,0 +1,206 @@
+
+
+    <div id="teacher_view1">
+       <form name="mainslidetext">
+       <fieldset>
+        <table class="mainform"
+	       tal:condition="python: typeofimage == 'image'"
+		  tal:define="typeofimage here/getSlideImageFormat;">
+                <COLGROUP>
+		<COL width="33%"/>
+		<COL width="33%"/>
+                <COL width="33%"/>
+             </COLGROUP>
+		<thead><tr>
+	    <th align="center"> Main text </th>
+            <th align="center">Main image</th>
+	    <th align="center">Examples</th>
+	    </tr></thead>
+	        <tr>
+		<td>
+		   
+		     
+			<metal:data use-macro="python:here.widget('SlideText')"/>
+		
+		      
+	
+	     </td>
+             <td>
+                      <tal:block
+		      define="image python:here.getSlideImage();
+		      photo_display python:'mini';">
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+		       <img src="#" alt="" tal:replace="structure python:image.tag(height=200, width=200)" />
+		      </a>
+		      </tal:block>	     
+             </td>
+              	<td>
+			 
+			 <metal:data use-macro="python:here.widget('Examples')"/>
+	
+	     </td>
+                 
+     </tr>
+        </table>
+	
+	<table width="100%" class="mainform"
+		  tal:condition="python: typeofimage != 'image'"
+		  tal:define="typeofimage here/getSlideImageFormat;
+			      ">
+	     <COLGROUP>
+		<COL width="33%"/>
+		<COL width="33%"/>
+                <COL width="33%"/>
+             </COLGROUP>
+	     <tr>
+	     <!--<td tal:repeat="field_name here/getTableMain">
+		<metal:data use-macro="python:here.widget(field_name)"/>
+	     </td> -->
+            <thead><tr>
+	    <th align="center"> Main text </th>
+            <th align="center">Main image</th>
+	    <th align="center">Examples</th>
+	    </tr></thead>
+             <td>
+                   <metal:data use-macro="python:here.widget('SlideText')"/>
+             </td> 
+             <td> 
+	         <tal:block
+		    define="image python:here.getSlideImage();
+                     photo_display python:'mini';">
+	      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+          <img src="#" alt="" tal:replace="structure python:image.tag(height=200, width=200)" />
+             </a>
+       </tal:block>	     	
+		
+             </td>
+             <td>
+	              
+			<metal:data use-macro="python:here.widget('Examples')"/>
+	
+	     </td> 
+	      </tr>	   
+        </table>
+	</fieldset>
+        </form>
+	
+        <form name="explanationslidetext">
+	 <fieldset>
+          
+	   <table width="100%" class="explainform"
+		  tal:condition="python: typeofimage == 'image'"
+		  tal:define="typeofimage here/getExplanationImageFormat;">
+	     <COLGROUP>
+		<COL width="33%"/>
+		<COL width="33%"/>
+                <COL width="33%"/>
+             </COLGROUP>
+	     <thead><tr>
+	    <th align="center"> Explanation text </th>
+            <th align="center">Explanation image</th>
+	    <th align="center">Details</th>
+	    </tr></thead>
+	     
+	     <tr>
+	         	<td>
+			<metal:data use-macro="python:here.widget('Explanation')"/>
+	
+	     </td>
+             <td>
+                      <tal:block define="image python:here.getExplanationImage();
+		                         photo_display python:'mini';">
+		      <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+		         <img src="#" alt="" tal:replace="structure python:image.tag(height=200, width=200)" />
+		      </a>
+		      </tal:block>	     
+             </td>
+	     <td>
+	              <metal:data use-macro="python:here.widget('Details')"/>
+	
+	     </td>
+	     </tr>
+	      <thead><tr>
+	    <th align="center">References</th>
+            <th align="center">Handout</th>
+	    <th align="center">Alternative</th>
+	    </tr></thead>
+            <tr>
+	      
+	      <td>
+		 	
+		<metal:data use-macro="python:here.widget('SlideReference')"/>
+	
+	     </td>
+              <td>
+		 
+			<metal:data use-macro="python:here.widget('Handout')"/>
+	
+	     </td>
+             <td>
+			 
+			 <metal:data use-macro="python:here.widget('Alternative')"/>
+	
+	     </td>
+           </tr>	   
+          </table>
+	   <table width="100%" class="explainform"
+		  tal:condition="python: typeofimage != 'image'"
+		  tal:define="typeofimage here/getExplanationImageFormat;
+			      ">
+              <COLGROUP>
+		<COL width="33%"/>
+		<COL width="33%"/>
+                <COL width="33%"/>
+             </COLGROUP>
+	      <thead><tr>
+	    <th align="center"> Explanation text </th>
+            <th align="center">Explanation image</th>
+	    <th align="center">Details</th>
+	    </tr></thead>
+	     <tr>
+	         <td>
+			 <metal:data use-macro="python:here.widget('Explanation')"/>
+	
+	     </td>
+             <td>
+                      <tal:block define="image python:here.getExplanationImage();
+		                         photo_display python:'mini';">
+		         <a tal:condition="image" tal:attributes="href string:${image/absolute_url}">
+			     <img src="#" alt="" tal:replace="structure python:image.tag(height=200, width=200)" />
+		         </a>
+		      </tal:block>	     
+             </td>
+	     <td>
+			 <metal:data use-macro="python:here.widget('Details')"/>
+	
+	     </td>
+	     </tr>
+	      <thead><tr>
+	    <th align="center">References</th>
+            <th align="center">Handout</th>
+	    <th align="center">Alternative</th>
+	    </tr></thead>
+            <tr>
+	      <td>
+			 
+			 <metal:data use-macro="python:here.widget('SlideReference')"/>
+	
+	     </td>
+              <td>
+			 
+			 <metal:data use-macro="python:here.widget('Handout')"/>
+	
+	     </td>
+             <td>
+			 
+			 <metal:data use-macro="python:here.widget('Alternative')"/>
+	
+	     </td>
+           </tr>	   
+          </table>
+	 </fieldset>
+        </form>
+
+      
+    </div>
+  

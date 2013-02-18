@@ -1,0 +1,180 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      i18n:domain="plone">
+
+<head>
+    <title></title>
+</head>
+
+<body>
+
+    <!-- Selection Widgets -->
+
+    <metal:view_macro define-macro="view">
+      
+        <span metal:define-macro="selection-field-view">
+            <span tutorwebanswerselectionview:define-slot="inside" 
+                tal:define="vocab python:field.Vocabulary(context);
+			    value python:accessor();
+			    res  python:here.mymaybeMakeResult();
+			    correct python:res.isCorrect(value);
+                            display python:context.displayValue(vocab, value)">
+              
+	       <tal:block condition="correct">
+	       <span style="color:green;">
+		 <span tal:replace="structure display"/>
+		 </span>
+	      </tal:block>
+	       <tal:block condition="python:not correct">
+	       <span style="color:red;">
+		 <span tal:replace="structure display"/>
+		 </span>
+	      </tal:block>
+	     </span>
+        </span>
+      
+        
+    </metal:view_macro>
+
+    <metal:define define-macro="edit">
+      
+        
+	    <div class="field"
+		 tal:define="res  python:here.mymaybeMakeResult();
+			     vocab python:res.getVocabulary();
+		             selection python:res.getCandidateAnswerInTest();
+		             resultsView python:False;
+		             inline python:res.questionIsInline();
+		             radioView python:resultsView or (not inline);
+				 "
+		 tal:attributes="class python:'tutorwwebanswer';
+				 id python: 'id-AnswerPullDown'
+				 ">
+	     
+                <tal:shortVocab condition="radioView">
+
+                    <!-- Radio when answers are not inline -->
+		     <table>
+		      <tal:radios repeat="item vocab">
+		      <tr>
+			<metal:block define-macro="mark_wrong_answer_pre">
+	    <tal:condition condition="resultsView"
+			   tal:define="checked python:item == selection;
+				       correct python:res.isCorrect(item);
+				       ">
+	     
+	     <td valign="baseline" style="font-size:175%;">
+	      <tal:block condition="python:checked and correct"
+	       i18n:translate="answer_mark_correct">
+	       <span style="color:green;">&#x2714;</span>
+	      </tal:block>
+               <tal:block condition="python:checked and not correct"
+	       i18n:translate="answer_mark_wrong">
+	       <span style="color:red;">&#x2718;</span>
+	      </tal:block>
+	      <tal:block condition="python:correct and not checked"
+	       i18n:translate="answer_mark_correct_not_selected">
+	       <span style="color:gray;">&#x279C;</span>
+	      </tal:block>
+	     </td>
+	    </tal:condition>
+	   </metal:block>
+		 	
+		      <td valign="baseline"><span tal:replace="repeat/item/letter"/>)</td>
+                     
+		     <block tal:condition="python:not resultsView">
+		        <td valign="baseline">
+		      <input class="noborder"
+                               type="radio"
+                               tal:attributes="name python:'AnswerPullDown';
+					       fieldName python:'AnswerPullDown';
+                                               id string:fieldName_${repeat/item/number};
+                                               value string:${repeat/item/number};"
+                               />
+		      </td>
+			<td>
+                      <!--  <label tal:content="python:vocab.getValue(item)"
+                               i18n:translate=""
+                               tal:attributes="for string:${fieldName}_${repeat/item/number}" /> -->
+		      <label tal:replace="structure python:vocab.getValue(item)"/>
+		      </td>
+			
+			</block>
+                     <block tal:condition="python:resultsView">
+		       <td>
+		      <input class="noborder"
+                               type="radio"
+                               tal:attributes="name python:'AnswerPulldown';
+					       fieldName python:'AnswerPullDown';
+                                               id string:fieldName_${repeat/item/number};
+					       checked python:item in selection and 'checked' or None;
+                                               value string:${repeat/item/number};
+					       disabled python:True;"
+                               />
+		      </td>
+		      
+                       <!-- <label tal:content="python:vocab.getValue(item)"
+                               i18n:translate=""
+                               tal:attributes="for string:${fieldName}_${repeat/item/number}" /> -->
+		       <td>
+			 <label tal:replace="structure python:vocab.getValue(item)"/>
+			</td>
+		     </block>
+
+                       
+                     
+		      </tr>
+		      </tal:radios>
+                    
+		    </table>
+                </tal:shortVocab>
+
+                <tal:longVocab condition="python:not radioView">
+		  
+                    <!-- Pulldown when longer -->
+		 <!--   
+		    <input tal:attributes="name python:'mybuttom';
+					   id   python:'mybuttom';
+					   "
+			   type="button" class="context" value="&gt;&gt;"/>
+			-->   
+                   <select tal:attributes="name python:'AnswerPullDown';
+                                            id python:'AnswerPullDown';
+					    ">
+
+                        <option tal:repeat="item vocab"
+                                tal:attributes="value string:${repeat/item/number};
+                                                selected python:item == selection"
+                                tal:content="repeat/item/letter">
+                                
+                             
+			  
+			<!--<label tal:replace="structure python:vocab.getValue(item)"/> -->
+			</option>
+			
+			 
+                    </select>
+		   
+		    <!--
+		     <input type="button" id='mybuttom' class="context" value="&gt;&gt;"
+                             tal:attributes="onClick string:javascript:inout_selectAllWords('${fieldName}')"
+                             /> -->
+		     <!-- <div tal:replace="structure provider:plone.belowcontentbody"/> -->
+		  <!--<div tal:replace="structure provider:plone.belowcontenttitle"/> -->
+                </tal:longVocab>
+
+	   
+	    
+        </div>
+
+    </metal:define>
+
+    <div metal:define-macro="search">
+        <div metal:use-macro="context/widgets/selection/macros/edit" />
+    </div>
+
+</body>
+
+</html>

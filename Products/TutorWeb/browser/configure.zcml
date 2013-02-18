@@ -1,0 +1,42 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    i18n_domain="plone">
+
+    <include package="plone.app.contentmenu" />
+
+   
+
+       <browser:page
+        for="..interfaces.ILecture"
+        name="quizinfo"
+        class=".quizinfo.QuizInfoView"
+        permission="zope2.View"/>
+  
+    <!-- Register the control panel for database settings -->
+    
+    <browser:resource
+        name="optilux_dbsettings_icon.gif"
+        image="dbsettings_icon.gif"
+        />
+
+    <browser:page
+        name="tutorweb-database-controlpanel"
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        class=".dbsettings.TutorWebQuizDatabaseControlPanel"
+        permission="cmf.ManagePortal"
+        />
+        
+    <adapter
+        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+        provides="Products.TutorWeb.interfaces.IDatabaseSettings"
+        factory=".dbsettings.tutorweb_database_settings" 
+        />
+    <browser:resourceDirectory
+      name="Products.TutorWeb.javascripts"
+      directory="javascripts" 
+      />
+
+
+
+</configure>

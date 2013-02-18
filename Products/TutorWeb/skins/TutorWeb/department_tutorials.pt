@@ -1,0 +1,287 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+<!--  <div metal:fill-slot="column_two_slot"> -->
+      <!-- <div tal:replace="structure provider:plone.belowcontenttitle"/> -->
+     
+  <!--  </div> -->
+   <div metal:fill-slot="main">
+     
+      <h1>
+		<span tal:replace="here/Title"/>
+		more title 
+        </h1>
+      <br>
+     <!-- <tal:language
+	    tal:define="available view/available;
+	                languages view/languages;
+	                showFlags view/showFlags;"> -->
+<!--    <tal:language
+	tal:define="lang here/getLanguage">
+         <span tal:replace="lang"/>
+	 </tal:language>
+
+-->
+     
+     <block tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/department_slides_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Slide Material
+                    </a>
+		  </block>
+<br>
+<br> 
+   <metal:view_macro define-macro="tutorialview">
+	 
+	  <ul id="portal-globalnav"
+	      tal:define="URL here/absolute_url">
+	    <li>
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/department_view'">
+            
+                    Department Courses
+                    
+                </a>
+            </li>
+	     <li class="selected">
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/department_tutorials'">
+           
+                   
+		  Tutorials
+         
+                </a>
+		</li>
+	     <li>
+		 
+	     <a class="" href=""
+                   tal:attributes="href python:URL+'/department_results'">
+                Quiz Results
+                    
+                    
+                </a>
+            
+            </li>
+	     <li tal:condition="python:isteacher"
+			  tal:define="isteacher here/canSeeQuestions"> 
+		  <a href="#" tal:attributes="href python:URL+'/department_sponsors'">
+			 <span>   Sponsors  </span>
+                        </a>
+		   
+       </li> 
+	     </ul>
+	<hr>
+      
+     
+        <div class="someclasls"
+	     tal:omit-tag=""
+	     style="color:black"
+         >
+        
+	  
+        </div>
+
+      <!--
+     <div class="actionItems">
+	  <table>
+	    <tr><td><li>
+          
+                <a class="" href=""
+		   tal:define="URL here/absolute_url"
+                   tal:attributes="href python:URL+'/department_view'">
+            
+                    Department
+                    
+                </a>
+            
+            </li></td>
+	      <td> &nbsp; &nbsp; &nbsp;</td>
+     
+            <td>
+             <li>
+                <a class="" href=""
+		   tal:define="URL here/absolute_url"
+                   tal:attributes="href python:URL+'/department_courses'">
+            
+                    Courses
+                    
+                </a>
+            </li>
+            </td></tr></table>
+	    </div> -->
+<!--	   
+     <h2>
+                <span tal:define="t  here/Title;
+				  full python:'Tutorials'"
+		      tal:replace="full"/>
+        </h2>
+
+     
+-->
+        
+	
+    
+	<metal:listingmacro define-macro="folderlisting">
+	<!-- <tal:foldercontents define="folderContents python:here.contentValues(filter={'portal_type': 'Tutorial'});
+		dummy python:folderContents.sort(lambda x,y:cmp(x.id, y.id));"> -->
+	<tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter = 
+                                    {'portal_type' : ['Tutorial']}, batch = True);
+				    ">
+	<tal:listing condition="folderContents">
+	  
+	    <table class="listing"
+		   tal:define="seeQuestions here/canSeeQuestions;
+			       lang         here/getLanguage;
+			       ">
+	    <thead><tr>
+	    <th tal:condition="seeQuestions" 
+		    align="center"> Tutorial Id </th>
+            <th align="center">Tutorial Name</th>
+	    <!--<div tal:repeat="field_name here/getListed">
+		 <th tal:content="field_name"> name </th>
+	    </div> -->
+	    
+            <th align="center">
+			Language
+                </th>
+		<th align="center">
+			Courses
+		</th>
+		<th align="center">
+			Code
+		</th>
+                <th align="center">
+				Pdf 
+			
+		</th>
+		<th tal:condition="seeQuestions" 
+		    align="center"> Questions </th>
+                <th align="center">
+		  Literature
+                </th>
+                <th align="center">
+				Credits
+			
+		</th>
+		<th align="center">
+			No. of Lectures
+		</th>
+		<th tal:condition="seeQuestions" 
+		    align="center">
+			No. of Questions
+		</th>
+		<th tal:condition="seeQuestions" 
+		    align="center">
+			No. of R Questions
+		</th>
+	    </tr></thead>
+	    <metal:block tal:repeat="obj folderContents">
+	     <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+				     realobj obj/getObject;
+				     tutlang python:realobj.getTutorialLanguage();
+				     testlang python:realobj.getLanguage();
+                  "> 
+	       
+	     <tal:correctlang condition="python:tutlang==lang or (tutlang=='English' and lang == 'en') or (tutlang=='Icelandic' and lang == 'is')"> 
+		 <tr tal:define="oddrow repeat/obj/odd"
+		     tal:attributes="class python:test(oddrow, 'even', 'odd')">
+		   <td tal:condition="seeQuestions"
+		    tal:define="slid obj/getId">
+		  <id tal:content="slid"/>
+		</td>
+		 <td metal:define-macro="listitem"
+		     tal:define="url obj/getURL;
+		         icon obj/getIcon;
+			 utool nocall:here/portal_url;">
+			 <!-- pdf obj/getTutorial_pdf"> -->
+		<a href="#" tal:attributes="href url">
+		     <img src="" alt=""
+			  tal:attributes="src string:${utool}/${icon};
+					  alt obj/Title"/>
+		</a>
+		<a href="#" tal:attributes="href url"
+			    tal:content="obj/Title" />
+		</td>
+	
+		<td align="center">
+		<!--	<metal:data use-macro="python:realobj.widget('TutorialLanguage')"/> -->
+			<span tal:replace="tutlang"/>
+                </td>
+	
+		<td align="center">
+			<metal:data use-macro="python:realobj.widget('Courses')"/>
+		</td>
+                <td align="center"
+		    tal:define="codename python:here.getCode()+' ' + realobj.getCourseCode() + '.' + realobj.getNumberCode()">
+				<span tal:replace="codename"/>
+		</td>
+ 		<td align="center"> 
+			
+			<metal:data use-macro="python:realobj.widget('Pdf')"/>
+		</td> 
+		<td tal:condition="seeQuestions">
+		  <metal:data use-macro="python:realobj.widget('QuestionFile')"/>
+                </td>
+		<td align="center"
+		    tal:define="litContents python:realobj.getFolderContents(contentFilter={'portal_type': 'File'})"> 
+				<tal:listing condition="litContents">
+				 <block tal:repeat="lit litContents"> 	
+				  <block tal:define="url lit/getURL;">
+		<a href="#" tal:attributes="href url"
+			    tal:content="lit/Title" />
+		<br>
+	        </block>
+		</block> 
+		</tal:listing>	
+		</td> 
+		<td align="center"> 
+			
+			<metal:data use-macro="python:realobj.widget('Credits')"/>
+		</td> 
+		<td align="center"> 
+			
+			<metal:data use-macro="python:realobj.widget('numLectures')"/>
+		</td>
+ 	
+		<td tal:condition="seeQuestions" 
+		    align="center">	
+			<metal:data use-macro="python:realobj.widget('numQuestions')"/>
+		</td> 
+		<td tal:condition="seeQuestions" 
+		    align="center">
+			
+			<metal:data use-macro="python:realobj.widget('numRQuestions')"/>
+		</td> 	
+		</tr>
+		 
+		  </tal:correctlang> 
+	       
+	      </tal:block> 
+	    </metal:block>
+	    </table>
+	</tal:listing>
+	<p class ="discreet"
+	   tal:condition="not: folderContents"
+	   i18n:translate="description_no_tutorials_in_department">
+	   "There are currently no tutorials in the department."
+	</p>
+	</tal:foldercontents>
+	</metal:listingmacro>
+	 </metal:view_macro>
+   </div>
+</body>
+</html>

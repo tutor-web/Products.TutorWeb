@@ -1,0 +1,168 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xml:lang="en"
+      lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+
+<head><title></title></head>
+
+<body>
+<!--  <div metal:fill-slot="column_two_slot">
+  </div> -->
+   <div metal:fill-slot="column_one_slot">
+  </div>
+   <div metal:fill-slot="main">
+<!--	<h1>
+		<span tal:replace="here/Title"/>
+        </h1>	
+	-->
+        <metal:main-macro define-macro="main"
+                      tal:define="kssClassesView context/@@kss_field_decorator_view;
+                                  getKssClasses nocall:kssClassesView/getKssClassesInlineEditable;
+                                  templateId template/getId">
+     
+			 
+	 <h1 metal:use-macro="here/kss_generic_macros/macros/generic_title_view">
+            Title or id
+        </h1>
+	 
+        <block tal:condition="isteacher"
+		    tal:define="isteacher here/canSeeQuestions">
+		   <a   href="#" action="#"
+              tal:define="URL1 here/absolute_url;
+			  URL python:URL1+'/tutorial_slides_update'"
+		      tal:attributes="href URL"
+		      >
+		         Update Slide Material
+                    </a>
+		  </block>
+     
+      <br>
+     <br>
+     <tal:seequestions tal:define="seeQuestions here/canSeeQuestions">
+     <ul id="portal-globalnav"
+	 tal:define="URL here/absolute_url">
+       <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_view'">
+            
+                    Lectures
+                    
+                </a>
+            
+            </li>
+       <li>
+          
+                <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_literature'">
+            
+                    Literature
+                    
+                </a>
+            
+            </li>
+            <li>
+	     <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_courses'">
+            
+                    Related Courses
+                    
+                </a>
+            
+            </li>
+	    <!--
+	    <li tal:condition="python:seeQuestions and haveExtraMaterial" 
+		    tal:define="haveExtraMaterial here/haveAcknowledgementFolder;"> 
+		  <a href="#" tal:attributes="href python:URL+'/acknowledgement/tutorial_extradata'">
+			 <span>   Acknowledgement  </span>
+                        </a>
+		   
+       </li>-->
+	    <li class="selected" tal:condition="python:seeQuestions"> 
+		  <a href="#" tal:attributes="href python:URL+'/tutorial_sponsors'">
+			 <span>   Sponsors  </span>
+                        </a>
+		   
+       </li> 
+	    <li>
+		
+	     <a class="" href=""
+                   tal:attributes="href python:URL+'/tutorial_results'">
+                Quiz Results
+                    
+                    
+                </a>
+            
+            </li>
+	    </ul>
+        <hr>  
+	 
+	<metal:listingmacro define-macro="folderlisting">
+
+        <tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter={'portal_type': 'Sponsor'});
+			"> 
+	  
+	<tal:listing condition="folderContents">
+	    <table class="listing">
+	    <thead><tr>
+	    <th tal:condition="seeQuestions" 
+		    align="center"> Sponsor Id </th>
+            <th align="center">Sponsor Name</th>
+	    <th align="center">Sponsor url</th>
+	    
+	    </tr></thead>
+            
+	    <metal:block tal:repeat="obj folderContents">
+	      <tal:block tal:define="item_url obj/getURL|obj/absolute_url;
+				     realobj obj/getObject;
+                  "> 
+		 <tr tal:define="oddrow repeat/obj/odd"
+		     tal:attributes="class python:test(oddrow, 'even', 'odd')">
+		<td tal:condition="seeQuestions"
+                    tal:define="slid obj/getId">
+		  <id tal:content="slid"/>
+		</td>
+		   <td metal:define-macro="listitem"
+		     tal:define="url obj/getURL;
+		         icon obj/getIcon">
+		<a href="#" tal:attributes="href url">
+		     <img src="" alt=""
+			  tal:attributes="src string:${utool}/${icon};alt
+					  obj/Title"/>
+		</a>
+		<a href="#" tal:attributes="href url"
+			    tal:content="python:realobj.getTitle()" />
+	       
+		</td>
+		
+		<td align="center"> 
+			
+			<metal:data use-macro="python:realobj.widget('sponsorurl')"/>
+		</td>
+ 		
+			
+	
+	 
+		</tr>
+		 </tal:block>
+	    </metal:block> 
+	    </table>
+	</tal:listing>
+	
+	
+	<p class ="discreet"
+	   tal:condition="not: folderContents"
+	   i18n:translate="description_no_lectures_in_tutorial">
+	   "There are currently no sponsors listed for the tutorial."
+	</p>
+	</tal:foldercontents>
+	</metal:listingmacro>
+	 </tal:seequestions>  
+		</metal:main-macro>
+   </div>
+</body>
+</html>

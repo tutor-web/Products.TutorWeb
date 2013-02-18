@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+                      "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+ xml:lang="en"
+ lang="en"
+ xmlns:tal="http://xml.zope.org/namespaces/tal"
+ xmlns:metal="http://xml.zope.org/namespaces/metal"
+ xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+ i18n:domain="TutorWeb"
+ metal:use-macro="here/main_template/macros/master">
+ 
+ <body>
+  <metal:import-css fill-slot="css_slot">
+   <style type="text/css" media="screen" tal:content="string: @import url($portal_url/tutorwebstyles.css);">
+   </style>
+  </metal:import-css>
+<div metal:fill-slot="column_one_slot">
+     </div>
+    
+     <div metal:fill-slot="column_two_slot">
+    </div>
+  <metal:fill fill-slot="main">
+   
+    <h1 tal:content="here/title_or_id"/>
+    
+    <br/>
+    <blocK tal:define="questions python:here.aq_parent.getFolderContents(contentFilter={'portal_type':['TutorWebQuestion'],'sort_on':'getId'});
+	isteacher python:here.canSeeQuestions()">
+      <block tal:define="sibl python:[p for p in questions];
+			num_sibl python:len(sibl);
+			pos python:[i for i in range(num_sibl) if sibl[i].getId == here.getId()][0];">
+    	<div class="listingBar"
+	     tal:condition="python: next or prev"
+	     tal:define="next python:pos < num_sibl-1;
+	        prev python:pos != 0;">
+	     <span>
+		   <a class="listingNext"
+		      tal:define="n python:pos+1;
+		                 nextsib python:sibl[n%num_sibl]"
+		      tal:attributes="href python:nextsib.getURL()"
+		      tabindex="1"
+		      href="">
+		      <span il18n:translate="label_next">
+		         Next: </span>
+		      <span tal:replace="nextsib/getId"/>
+                    </a>
+              </span>
+	   
+	      <span tal:condition="python:pos > 0">
+		    <a class="listingPrevious"
+		       tal:define="prevsib python:sibl[pos-1]"
+		       tal:attributes="href python:prevsib.getURL()"
+		       tabindex="2"
+		       href="">
+                       <span il8n:translate="label_previous">
+		       Previous: </span>
+		       <span tal:replace="prevsib/getId" />
+		    </a>
+	      </span>
+	  
+	      <span tal:condition="python:pos == 0">
+		    <a class="listingPrevious"
+		       tal:define="prevsib python:sibl[num_sibl-1]"
+		       tal:attributes="href python:prevsib.getURL()"
+		       tabindex="2"
+		       href="">
+                       <span il8n:translate="label_previous">
+		       Previous: </span>
+		       <span tal:replace="prevsib/getId" />
+		    </a>
+	      </span>
+	    
+	</div>
+     </block>
+      <br>
+	<br>
+    <div class="left">
+
+  <dl id="portlet-navigation"
+    class="portlet portletNavigationTree"  
+    >
+
+    <dt class="portletHeader">
+        <span class="portletTopLeft"></span>
+        <a href="#" 
+           class="tile"
+           tal:attributes="href string:${here/absolute_url}/sitemap" 
+           i18n:translate="box_navigation">Questions</a>
+    </dt>
+    <br>
+      
+    <block tal:condition="isteacher">
+    
+      <li tal:repeat="ref questions">
+			<block
+			   tal:define="URL ref/getURL">
+		      <a href="#" tal:attributes="href python:URL+'/view'"
+			    tal:content="ref/getId" />
+		      </block>
+     </li>
+      
+    </block>
+    </dl> 
+</div>
+  <div class="middle">
+	
+    <br/>
+    <br/>
+       
+      <tal:call-view-macro define="
+       
+       inputDisabled	python:'yes'; 
+       tmp              python:here.setTransformR(False);
+       ">
+       
+	<table>
+	  <tr>
+	    <td>
+	      <p><b>Question text:</b></p>
+	      <metal:use use-macro="python:here.widget('quizQuestion')"/>
+            </td>
+	   <td tal:condition="imageurl"
+	       tal:define="imageurl here/getImageUrl;">
+	       <a tal:condition="imageurl" tal:attributes="href string:${imageurl}">
+		 <img tal:attributes="src string:${imageurl}" alt="" width="225" height="151"/>
+		 </a>
+	      
+	      </td> 
+	    <td tal:condition="image"
+		           tal:define="image here/getQuestionImage;">
+	            <a tal:condition="image" tal:attributes="href string:${image/absolute_url}"> 
+		       
+		               
+		          <img src="#" alt="" tal:replace="structure python:image.tag(scale=0.5)"/>  
+			   
+				<!--
+			<img src="#" alt="" tal:replace="structure python:here.getField('QuestionImage').tag(here, scale='mini')"/> -->
+
+			          </a> </td> 
+	    <!--
+	    <td>
+		   <div tal:replace="structure here/QuestionImage_mini">Image</div> 
+		          </td > -->
+	    </tr>
+	    <tr>
+	      <metal:use use-macro="python:here.widget('AnswerList')"/>
+	      <p><b>Short Explanation: </b></p>
+	      <metal:use use-macro="python:here.widget('quizQuestionExplanation')"/>
+	    </tr>
+	    </table>
+	
+     </tal:call-view-macro>
+      </div>
+      </block>
+  </metal:fill>
+ </body>
+</html>
+

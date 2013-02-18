@@ -1,0 +1,4 @@
+1. Front page - don't have departments on tab and don't use plone default
+2. Handout, Details, Examples, Alternatives, test view pages.
+3. Clicking on left side - Navigation - slide view does not work.
+4. 

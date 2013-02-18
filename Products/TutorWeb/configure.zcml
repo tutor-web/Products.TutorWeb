@@ -1,0 +1,190 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five">
+  
+  <include file="profiles.zcml" />
+  <include package=".portlets" />
+  <include package="collective.lead" />
+
+  <!-- Include the sub-packages that use their own configure.zcml files. -->
+  <include package=".browser" file="configure.zcml"/>
+  <!-- <include package="my.package" file="configure.zcml" /> -->
+    <subscriber handler=".School.add_school_to_database" />
+     <subscriber handler=".School.edit_school_to_database" />
+      <subscriber handler=".School.copy_school_to_database" />
+     <subscriber handler=".Class.add_class_to_database" />
+     <subscriber handler=".Class.edit_class_to_database" />
+      <subscriber handler=".Class.copy_class_to_database" />
+   <subscriber handler=".Tutorial.new_content_edited_to_print" />
+   <subscriber handler=".Tutorial.new_content_sponsor_edited_to_print" />
+  
+    <subscriber handler=".Tutorial.new_content_removed_sponsor_to_print" />
+    
+     <subscriber handler=".Tutorial.new_content_orderedcontent_added_to_print" />
+     <subscriber handler=".Tutorial.new_content_sponsor_added_to_print" />
+    
+      <subscriber handler=".Tutorial.new_content_orderedcontent_cloned_to_print" />
+      <subscriber handler=".Tutorial.new_content_sponsor_cloned_to_print" /> 
+      <subscriber handler=".Tutorial.new_content_printable_cloned_to_print" />
+
+      <subscriber handler=".Tutorial.new_content_orderedcontainer_moved_to_print" />
+      <subscriber handler=".Tutorial.new_content_printable_moved_to_print" />   
+      <subscriber handler=".Tutorial.new_content_sponsor_willbemoved_to_print" />
+      
+      
+  <class class=".Tutorial.Tutorial">
+        <require
+            permission="zope2.View"
+            interface=".interfaces.IPrintable"
+            />
+    </class>
+     <class class=".Lecture.Lecture">
+        <require
+            permission="zope2.View"
+            interface=".interfaces.ILecture"
+            />
+    </class>
+     <class class=".Class.Class">
+        <require
+            permission="zope2.View"
+            interface=".interfaces.IClass"
+            />
+    </class>
+    <class class=".Sponsor.Sponsor">
+        <require
+            permission="zope2.View"
+            interface=".interfaces.ISponsor"
+            />
+    </class>
+  <browser:resource
+     file="viewlets.py"
+     name="viewlets.py"
+  />
+  <browser:resource
+     file="questionandanswer.py"
+     name="questionandanswer.py"
+  />
+  <browser:resource
+     file="SlideView.py"
+     name="SlideView.py"
+  />
+  <browser:resource
+     file="browser/tutorial1.kss"
+     name="tutorial1.kss"
+  />
+  <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response1"
+     name="response1"
+     permission="zope2.View"
+  /> 
+  <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response2"
+     name="response2"
+     permission="zope2.View"
+  /> 
+  <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response3"
+     name="response3"
+     permission="zope2.View"
+  /> 
+  <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response4"
+     name="response4"
+     permission="zope2.View"
+  /> 
+   <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response5"
+     name="response5"
+     permission="zope2.View"
+  /> 
+  <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response6"
+     name="response6"
+     permission="zope2.View"
+  /> 
+  <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response7"
+     name="response7"
+     permission="zope2.View"
+  /> 
+  <browser:page
+     for="plone.app.kss.interfaces.IPortalObject"
+     class=".demoview.DemoView"
+     attribute="response8"
+     name="response8"
+     permission="zope2.View"
+  /> 
+  <browser:page
+        for="plone.app.kss.interfaces.IPortalObject"
+        class="archetypes.kss.fields.FieldsView"
+        name="replaceField"
+        attribute="replaceField"
+        permission="zope.Public"
+      /> 
+   <!-- Custom viewlet -->
+  <!--  <browser:viewlet
+        name="diystyle.custom"
+	for=".Lecture.Lecture"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        class=".viewlets.CreditsViewlet"
+        permission="zope2.View"
+        /> -->
+ <browser:viewlet
+        name="diystyle.custom"
+	for="plone.app.kss.interfaces.IPortalObject"
+        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
+        class=".viewlets.CreditsViewlet"
+        permission="zope2.View"
+	/>	
+<browser:viewlet
+        name="tutorweb.questionandanswer"
+	for=".Lecture.Lecture"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+        class=".questionandanswer.QuestionAndAnswer"
+        permission="zope2.View"
+        />
+<browser:viewlet
+        name="tutorweb.SlideView"
+	for=".Slide.Slide"
+        manager="plone.app.layout.viewlets.interfaces.IBelowContentTitle"
+        class=".SlideView.SlideView"
+        permission="zope2.View"
+        />
+<browser:viewlet
+        name="tutorweb.TeacherView"
+	for=".Slide.Slide"
+        manager="plone.app.layout.viewlets.interfaces.IAboveContentBody"
+        class=".TeacherView.TeacherView"
+        permission="zope2.View"
+        />
+
+    <!-- Register the quiz questions database utilities -->
+   
+    <utility factory=".questioninformation.QuestionLocator" />
+    <utility factory=".studentinformation.StudentLocator" />
+   <utility factory=".schoolinformation.SchoolLocator" />
+    <utility factory=".classinformation.ClassLocator" />
+    <utility factory=".quizinformation.QuizLocator" />
+    <utility factory=".quizinformation.TakeQuiz" />
+    <!-- HMM what about quizmodification.QuizModificationLocator -->
+    <!-- Register database configuration utilities -->
+    <utility
+        provides="collective.lead.interfaces.IDatabase"
+        factory=".db.TutorWebQuizDatabase"
+        name="tutorweb.quizquestioninformation"/>  
+		
+</configure>

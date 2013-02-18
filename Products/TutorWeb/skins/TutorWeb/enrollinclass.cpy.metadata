@@ -1,0 +1,7 @@
+[default]
+title=Enroll in class
+border=None
+
+[actions]
+action.success=redirect_to_action:string:view
+action.failure = redirect_to_action:string:view

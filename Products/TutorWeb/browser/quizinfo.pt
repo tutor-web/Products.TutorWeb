@@ -1,0 +1,87 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+<!--
+<metal:css fill-slot="css_slot">
+    <style type="text/css" media="all"
+            tal:content="string: @import url(${context/++resource++optilux-cinemacontent.css});"></style>
+</metal:css>
+-->
+<metal:main fill-slot="main">
+    <tal:main-macro metal:define-macro="main"
+ 		    tal:define="path python:here.getPhysicalPath();"
+		    >
+
+        <h1 class="documentFirstHeading">
+          Questions requested in quiz
+	 <!-- <block tal:condition="python:usern==None">
+	    <span tal:replace="fullname"/> 
+	  </block> 
+	  <block tal:condition="python:not(usern==None)"> 
+	       <span tal:replace="fullnamen"/> 
+          </block> -->
+        </h1>
+
+        
+            
+        <table class="listing">
+            <thead>
+                <tr>
+                    <th>username</th>
+                    <th>question location</th>
+		    <th>quiz location</th>
+		    <th> quiz time </th>
+		    <th> correct answer </th>
+		    <th> student answer </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr tal:repeat="questions view/student_questions">
+                    
+                        <td>
+                            
+                              <tal:block content="questions/studentinformation/student_username" />
+                             
+                        </td>
+                        <td>
+                         
+                             <tal:block content="questions/questioninformation/question_location" />
+                           
+                        </td>
+			<td>
+                         
+                             <tal:block content="questions/quiz_location" />
+                           
+                        </td>
+				<td>
+                         
+                             <tal:block content="questions/quiz_time" />
+                           
+                        </td>
+			<td>
+                         
+                             <tal:block content="questions/questioninformation/correct_id" />
+                           
+                        </td>
+			<td>
+                         
+                             <tal:block content="questions/student_answer" />
+                           
+                        </td>
+				
+                    
+                </tr>
+            </tbody>
+        </table>
+
+    </tal:main-macro>
+</metal:main>
+
+</body>
+</html>
+
