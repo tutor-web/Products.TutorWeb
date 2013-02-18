@@ -4,16 +4,6 @@
 
 create database if not exists tutorweb;
 use tutorweb;
-create table if not exists question_modification (
-    modification_id integer unsigned not null auto_increment primary key,
-    question_id integer unsigned not null,
-    modification_time datetime not null,
-    foreign key(question_id)
-        references question_information(question_id)
-            on update restrict
-            on delete restrict
-    
-) engine=InnoDB;
 create table if not exists question_information (
     question_id integer unsigned not null auto_increment primary key,
     question_location varchar(64) not null,
@@ -23,6 +13,16 @@ create table if not exists question_information (
     question_unique_id varchar(64) UNIQUE not null,
     index correct_answer(correct_id),
     index question_url(question_location)
+    
+) engine=InnoDB;
+create table if not exists question_modification (
+    modification_id integer unsigned not null auto_increment primary key,
+    question_id integer unsigned not null,
+    modification_time datetime not null,
+    foreign key(question_id)
+        references question_information(question_id)
+            on update restrict
+            on delete restrict
     
 ) engine=InnoDB;
 create table if not exists student_information (
