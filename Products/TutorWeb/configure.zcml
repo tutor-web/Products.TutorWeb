@@ -6,6 +6,8 @@
   <include package=".portlets" />
   <include package="collective.lead" />
 
+  <include package="tutorweb.quiz" />
+
   <!-- Include the sub-packages that use their own configure.zcml files. -->
   <include package=".browser" file="configure.zcml"/>
   <!-- <include package="my.package" file="configure.zcml" /> -->
