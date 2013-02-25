@@ -427,6 +427,8 @@ class TutorWebQuestion(ATFolder):
             return self.getQuestionImage().tag()
         else:
             return ""
+    def getQuestionExplanationData(self):
+        return self.getField('quizQuestionExplanation').get(self)
     def getQuestionData(self):
         texttype = self.question.getContentType()
         if (texttype == 'text/latex'):
