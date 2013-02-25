@@ -1,0 +1,58 @@
+div#archetypes-fieldname-SlideImageFormat select:change {
+					  
+    action-server: response1;
+    response1-value: currentFormVar();
+    response1-imagefield: 'archetypes-fieldname-SlideImage';
+    response1-textimagefield: 'archetypes-fieldname-SlideImageText';
+    action-client: log;
+}
+div#archetypes-fieldname-SlideImageFormat:load {
+    evt-load-initial: true;
+    action-server: response2;
+ 
+}
+div#archetypes-fieldname-ExplanationImageFormat select:change {
+					  
+    action-server: response1;
+    response1-value: currentFormVar();
+    response1-imagefield: 'archetypes-fieldname-ExplanationImage';
+    response1-textimagefield: 'archetypes-fieldname-ExplanationImageText';
+   
+    action-client: log;
+}
+div#id-AnswerPullDown select:change {
+					  
+    action-server: response3;
+    response3-bla: 'bla';
+    response3-value: currentFormVar();
+    response3-pulldownfield: 'AnswerPullDown';
+    
+    action-client: log;
+}
+a.updatetransformable:click {
+    evt-click-preventdefault: true;			    			    	      		      		
+    action-server: response5;
+    response3-value: currentFormVar();
+    action-client: log;
+}
+a.tile:click {
+    action-client: alert;
+}
+a.updatetransformable:timeout {
+    evt-timeout-delay:  10000;
+    action-server:      response6;
+    action-client:      log;
+    log-message:        'Updating slidetext from timeout';
+}
+a.updateteacherview:click {
+    evt-click-preventdefault: true;			    			    	      		      		
+    action-server: response7;
+    response3-value: currentFormVar();
+    action-client: log;
+}
+a.updateteacherview:timeout {
+    evt-timeout-delay:  10000;
+    action-server:      response8;
+    action-client:      log;
+    log-message:        'Updating slidetext - teacherview from timeout';
+}
