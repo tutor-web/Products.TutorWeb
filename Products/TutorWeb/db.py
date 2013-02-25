@@ -16,6 +16,7 @@ from sqlalchemy import schema
 from sqlalchemy import *
 #from sqlalchemy import Table, relation
 
+from Products.TutorWeb.allocationinformation import AllocationInformation
 from Products.TutorWeb.questioninformation import QuestionInformation
 from Products.TutorWeb.studentinformation import StudentInformation
 from Products.TutorWeb.schoolinformation import SchoolInformation
@@ -43,6 +44,7 @@ class TutorWebQuizDatabaseSettings(Persistent):
     password = None
     database = ''
 
+
 class TutorWebQuizDatabase(Database):
     """The quiz database - registered as a utility providing
     collective.lead.interfaces.IDatabase and named 'tutorweb.quizinformation'
@@ -65,6 +67,7 @@ class TutorWebQuizDatabase(Database):
         tables['class_information'] = Table('class_information', metadata, autoload=True)
         tables['classregistration_information'] = Table('classregistration_information', metadata, autoload=True)
         tables['quiz_information'] = Table('quiz_information', metadata, autoload=True)
+        tables['allocation_information'] = Table('allocation_information', metadata, autoload=True)
         tables['question_modification'] = Table('question_modification', metadata, autoload=True) 
     def _setup_mappers(self, tables, mappers):
         """Map the database Tables to SQLAlchemy Mapper objects
@@ -102,12 +105,12 @@ class TutorWebQuizDatabase(Database):
                                             'questioninformation' : relation(QuestionInformation),
                                             'studentinformation' : relation(StudentInformation),
                                             })
+        mappers['allocation_information'] = mapper(AllocationInformation, tables['allocation_information'],
+                               properties = {
+                                            'question_information' : relation(QuestionInformation),
+                                            'student_information' : relation(StudentInformation),
+                                            })
         mappers['question_modification'] = mapper(QuestionModification, tables['question_modification'],
                                         
                                            
                                             )
-        
-
-
-
-        

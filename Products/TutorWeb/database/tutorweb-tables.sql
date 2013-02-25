@@ -13,7 +13,7 @@ create table if not exists question_information (
     question_unique_id varchar(64) UNIQUE not null,
     index correct_answer(correct_id),
     index question_url(question_location)
-    
+    --TODO: Wot, no index on question_unique_id?
 ) engine=InnoDB;
 create table if not exists question_modification (
     modification_id integer unsigned not null auto_increment primary key,
@@ -82,4 +82,19 @@ create table if not exists quiz_information (
             on delete restrict
 ) engine=InnoDB;
 
-
+CREATE TABLE IF NOT EXISTS allocation_information (
+       allocation_id INTEGER UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+       student_id INTEGER UNSIGNED NOT NULL,
+       quiz_location VARCHAR(64) NOT NULL, -- Strictly speaking the lecture location
+       question_id INTEGER UNSIGNED NOT NULL,
+       allocation_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       answered_flag BOOLEAN NOT NULL DEFAULT false, -- Question answered, so out of the pool
+       FOREIGN KEY(student_id)
+        REFERENCES student_information(student_id)
+            ON UPDATE RESTRICT
+            ON DELETE RESTRICT,
+       FOREIGN KEY(question_id)
+        REFERENCES question_information(question_id)
+            ON UPDATE RESTRICT
+            ON DELETE RESTRICT
+) engine=InnoDB DEFAULT CHARSET=utf8;
