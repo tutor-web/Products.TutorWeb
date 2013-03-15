@@ -12,6 +12,12 @@
         name="quizinfo"
         class=".quizinfo.QuizInfoView"
         permission="zope2.View"/>
+
+    <browser:page name="quiz-question-button"
+      for="Products.TutorWeb.interfaces.ILecture"
+      template="question-button.pt"
+      permission="zope2.View"
+      />
   
     <!-- Register the control panel for database settings -->
     

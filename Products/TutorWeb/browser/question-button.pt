@@ -1,0 +1,17 @@
+<div xmlns:tal="http://xml.zope.org/namespaces/tal"
+     xmlns:metal="http://xml.zope.org/namespaces/metal"
+     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+     lang="en"
+     i18n:domain="tutorweb"
+     >
+  <form name="submit" action="#" method="post" target="main"
+        tal:attributes="action string:${context/absolute_url}/question_submit;">
+    <input class="context"
+           type="submit"
+           name="get"
+           value="Quiz"
+           onclick='if (this.form.onsubmit()) { this.form.submit(); this.enabled=false;}'
+           i18n:domain="plone"
+           i18n:attributes="value"/> 
+  </form>
+</div>

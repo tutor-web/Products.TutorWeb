@@ -37,20 +37,8 @@
 		       
 		
 		<td tal:condition="hasQuest">
-                     
-	       <form name="submit" action="#" method="post"
-	       tal:attributes="action python:parenturl +'/question_submit'" target="main">
-		  
-		    
-		  <input 
-		  class="context"
-		  type="submit"
-		  name="get"
-		  value="Quiz"
-		  i18n:domain="plone"
-		  i18n:attributes="value"/> 
-       </form>
-	       </td>
+	       <div tal:replace="structure context/@@quiz-question-button" />
+       </td>
 		<td>&nbsp&nbsp&nbsp&nbsp</td>
 		<td tal:condition="isteacher"
 		    tal:define="isteacher here/canSeeQuestions">
