@@ -74,70 +74,7 @@
      file="browser/tutorial1.kss"
      name="tutorial1.kss"
   />
-  <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response1"
-     name="response1"
-     permission="zope2.View"
-  /> 
-  <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response2"
-     name="response2"
-     permission="zope2.View"
-  /> 
-  <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response3"
-     name="response3"
-     permission="zope2.View"
-  /> 
-  <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response4"
-     name="response4"
-     permission="zope2.View"
-  /> 
-   <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response5"
-     name="response5"
-     permission="zope2.View"
-  /> 
-  <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response6"
-     name="response6"
-     permission="zope2.View"
-  /> 
-  <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response7"
-     name="response7"
-     permission="zope2.View"
-  /> 
-  <browser:page
-     for="plone.app.kss.interfaces.IPortalObject"
-     class=".demoview.DemoView"
-     attribute="response8"
-     name="response8"
-     permission="zope2.View"
-  /> 
-  <browser:page
-        for="plone.app.kss.interfaces.IPortalObject"
-        class="archetypes.kss.fields.FieldsView"
-        name="replaceField"
-        attribute="replaceField"
-        permission="zope.Public"
-      /> 
-   <!-- Custom viewlet -->
+  <!-- Custom viewlet -->
   <!--  <browser:viewlet
         name="diystyle.custom"
 	for=".Lecture.Lecture"
@@ -145,13 +82,6 @@
         class=".viewlets.CreditsViewlet"
         permission="zope2.View"
         /> -->
- <browser:viewlet
-        name="diystyle.custom"
-	for="plone.app.kss.interfaces.IPortalObject"
-        manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
-        class=".viewlets.CreditsViewlet"
-        permission="zope2.View"
-	/>	
 <browser:viewlet
         name="tutorweb.questionandanswer"
 	for=".Lecture.Lecture"
