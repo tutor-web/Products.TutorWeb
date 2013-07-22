@@ -133,7 +133,7 @@
 	 <img src="https://dl-web.dropbox.com/get/IA/figs/logo.jpg?w=95f8ea70" width="225" height="151" alt="Milford Sound in New Zealand"/> --> 
 	<metal:listingmacro define-macro="folderlisting">
 
-        <tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter={'portal_type': 'Lecture'});
+        <tal:foldercontents define="folderContents python:here.getFolderContents(contentFilter={'portal_type': ['Lecture', 'tw_lecture']});
 			"> 
 	 
 	<tal:listing condition="folderContents">
@@ -149,10 +149,6 @@
 		<th tal:condition="seeQuestions" 
 		    align="center">
 			No. of Questions
-		</th>
-	     <th tal:condition="seeQuestions" 
-		    align="center">
-			No. of R Questions
 		</th>
 	    </tr></thead>
             
@@ -184,22 +180,13 @@
 			
 			<metal:data use-macro="python:realobj.widget('Pdf')"/>
 		</td> 
-		<td align="center"> 
-			
-			<metal:data use-macro="python:realobj.widget('numSlides')"/>
+		<td align="center"
+		    tal:content="python:len(realobj.restrictedTraverse('@@folderListing')(portal_type='Slides'))">
 		</td>
  		<td tal:condition="seeQuestions" 
-		    align="center">
-			
-			<metal:data use-macro="python:realobj.widget('numQuestions')"/>
+		    align="center"
+		    tal:content="python:len(realobj.restrictedTraverse('@@folderListing')(portal_type=['tw_question','TutorWebQuestion']))">
 		</td> 
-		<td tal:condition="seeQuestions" 
-		    align="center">
-			
-			<metal:data use-macro="python:realobj.widget('numRQuestions')"/>
-		</td> 	
-			
-	
 	 
 		</tr>
 		 </tal:block>

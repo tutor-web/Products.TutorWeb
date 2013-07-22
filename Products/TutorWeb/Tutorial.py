@@ -589,20 +589,8 @@ class Tutorial(ATFolder):
         # selected in quiz
         obj = self.createObjectXX('BaseQuestionSelectionParameters')
         obj.setTitle('QuestionSelectionParameters')
-        # Enable contstraining so not all types are visible in the add menu
-        self.setConstrainTypesMode(constraintypes.ENABLED)  
-        allowedTypes = self.getLocallyAllowedTypes()
-        mytypes = []
-        # types not used in add menu
-        # remove, leave in for the moment
-        ##ranges = ('BaseQuestionSelectionParameters')
-        ##for t in allowedTypes:
-        ##    if t not in ranges:
-        ##        mytypes.append(t)
-
-        ## # Tweak the menu
-        ##self.setLocallyAllowedTypes(mytypes)
-        ##self.setImmediatelyAddableTypes(mytypes)
+        # Use the FTI to restrict visible content
+        self.setConstrainTypesMode(constraintypes.DISABLED)
         obj.tryWorkflowAction("publish", ignoreErrors=True)
         obj.reindexObject()
    

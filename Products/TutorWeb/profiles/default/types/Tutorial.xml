@@ -17,6 +17,7 @@
   <element value="Folder"/>
   <element value="Sponsor"/>
  <element value="BaseQuestionSelectionParameters"/> 
+   <element value="tw_lecture"/> 
  </property>
  <property name="allow_discussion">False</property>
  <property name="default_view">tutorial_view</property>
