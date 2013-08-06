@@ -39,10 +39,6 @@ from Products.TutorWeb.interfaces import ISchoolLocator
 from Products.TutorWeb.interfaces import IStudentLocator
 from Products.TutorWeb.interfaces import ISchool
 
-from Products.TutorWeb.classinformation import ClassInformation
-from Products.TutorWeb.classregistrationinformation import ClassRegistrationInformation
-from Products.TutorWeb.schoolinformation import SchoolInformation
-from Products.TutorWeb.studentinformation import StudentInformation
 from Products.Archetypes.interfaces import IObjectInitializedEvent, IObjectEditedEvent
 from OFS.interfaces import IObjectClonedEvent, IObjectWillBeRemovedEvent, IObjectWillBeMovedEvent
 from zope.component import adapter, getMultiAdapter, getUtility
@@ -226,8 +222,9 @@ corresponding to relevant Literature and has references to the tutorials which b
                     elif (len(tempname) == 1):
                         familyname = fullname
                     
-                student = StudentInformation(candidateId, ranid, firstname, familyname, email)
-                student.addToDataBase()
+                #NB: Code is being migrated to tutorweb.quiz
+                #student = StudentInformation(candidateId, ranid, firstname, familyname, email)
+                #student.addToDataBase()
             # now find the student just added
             studentinfo = studlocator.student_by_randomnumber(ranid)
             # now find classinfo
@@ -248,8 +245,9 @@ corresponding to relevant Literature and has references to the tutorials which b
                 i = len(stop)
             except:
                 stop = 0
-            registration = ClassRegistrationInformation(studentinfo, classinfo, start, stop)
-            registration.addToDataBase()
+            #NB: Code is being migrated to tutorweb.quizdb
+            #registration = ClassRegistrationInformation(studentinfo, classinfo, start, stop)
+            #registration.addToDataBase()
             return True
         else:
             return False
@@ -337,8 +335,8 @@ corresponding to relevant Literature and has references to the tutorials which b
         '''add school to database when school is created'''
         # get correctschoolinformation
         parent = aq_parent(self)
-        schoollocator = getUtility(ISchoolLocator)
-        schoolinformation = schoollocator.school_by_id(int(parent.getDatabaseId()))
+        #schoollocator = getUtility(ISchoolLocator)
+        #schoolinformation = schoollocator.school_by_id(int(parent.getDatabaseId()))
         # set char set might have for example icelandic letters in title
         tit = self.getTitle()
         if not isinstance(tit, unicode):
@@ -352,10 +350,11 @@ corresponding to relevant Literature and has references to the tutorials which b
             self.setTitle(email)
     
         # create class and add to database
-        myclass = ClassInformation(schoolinformation, tit, email)
-        myclass.addToDataBase()
+        #NB: This is knobbled for now, as code migrates to tutorweb.quizdb
+        #myclass = ClassInformation(schoolinformation, tit, email)
+        #myclass.addToDataBase()
         #add database id
-        self.setClassDatabaseId(str(myclass.class_id))
+        #self.setClassDatabaseId(str(myclass.class_id))
             
         parent = aq_parent(self)
         

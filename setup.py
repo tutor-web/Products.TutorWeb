@@ -25,8 +25,6 @@ setup(name='Products.TutorWeb',
       install_requires=[
           'setuptools',
           # -*- Extra requirements: -*- 
-          "MySQL-python",
-          'collective.lead>=1.0b3,<2.0dev',
           'Products.DataGridField>=1.8a1',
           'zope.app.container',
 	  'numpy',         

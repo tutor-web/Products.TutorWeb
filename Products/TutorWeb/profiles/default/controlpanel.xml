@@ -2,12 +2,14 @@
 
 <object name="portal_controlpanel" meta_type="Plone Control Panel Tool">
 
+ <!--NB: Being migrated to tutorweb.quizdb
  <configlet title="Tutor-web quiz Database" action_id="TutorWebQuizDatabase"
     appId="TutorWebQuizDatabase" category="Products" condition_expr=""
     url_expr="string:${portal_url}/@@tutorweb-database-controlpanel"
     visible="True">
   <permission>Manage portal</permission>
  </configlet>
+ -->
   
 </object>
 

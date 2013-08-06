@@ -4,19 +4,12 @@
   
   <include file="profiles.zcml" />
   <include package=".portlets" />
-  <include package="collective.lead" />
 
   <include package="tutorweb.quiz" />
 
   <!-- Include the sub-packages that use their own configure.zcml files. -->
   <include package=".browser" file="configure.zcml"/>
   <!-- <include package="my.package" file="configure.zcml" /> -->
-    <subscriber handler=".School.add_school_to_database" />
-     <subscriber handler=".School.edit_school_to_database" />
-      <subscriber handler=".School.copy_school_to_database" />
-     <subscriber handler=".Class.add_class_to_database" />
-     <subscriber handler=".Class.edit_class_to_database" />
-      <subscriber handler=".Class.copy_class_to_database" />
    <subscriber handler=".Tutorial.new_content_edited_to_print" />
    <subscriber handler=".Tutorial.new_content_sponsor_edited_to_print" />
   
@@ -103,20 +96,5 @@
         class=".TeacherView.TeacherView"
         permission="zope2.View"
         />
-
-    <!-- Register the quiz questions database utilities -->
-   
-    <utility factory=".questioninformation.QuestionLocator" />
-    <utility factory=".studentinformation.StudentLocator" />
-   <utility factory=".schoolinformation.SchoolLocator" />
-    <utility factory=".classinformation.ClassLocator" />
-    <utility factory=".quizinformation.QuizLocator" />
-    <utility factory=".quizinformation.TakeQuiz" />
-    <!-- HMM what about quizmodification.QuizModificationLocator -->
-    <!-- Register database configuration utilities -->
-    <utility
-        provides="collective.lead.interfaces.IDatabase"
-        factory=".db.TutorWebQuizDatabase"
-        name="tutorweb.quizquestioninformation"/>  
 		
 </configure>

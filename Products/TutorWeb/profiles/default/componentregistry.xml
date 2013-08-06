@@ -5,10 +5,12 @@
 <componentregistry>
  <utilities>  
    
+   <!--NB: Being migrated to tutorweb.quizdb
    <utility
      interface="Products.TutorWeb.interfaces.IDatabaseSettings"
      factory="Products.TutorWeb.db.TutorWebQuizDatabaseSettings"
-     /> 
+     />
+   --> 
     <utility
       interface="plone.app.users.userdataschema.IUserDataSchemaProvider"
       factory="Products.TutorWeb.userdataschema.UserDataSchemaProvider"/>

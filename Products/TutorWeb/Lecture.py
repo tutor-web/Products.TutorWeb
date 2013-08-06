@@ -45,7 +45,6 @@ from Products.TutorWeb.item_allocation import *
 from Products.ATContentTypes.lib import constraintypes
 
 from Products.TutorWeb.interfaces import IQuestionLocator
-from Products.TutorWeb.questionmodification import QuestionModification
 from datetime import datetime, timedelta
 
 class Lecture(ATFolder):
@@ -685,8 +684,7 @@ class Lecture(ATFolder):
                 questioninfo = questlocator.question_by_uid(QueObj.UID())
                 if (questioninfo):
                     '''question is part of database i.e. has been used in a quiz'''
-                    qm = QuestionModification(questioninfo.question_id, datetime.now())
-                    qm.addToDataBase()
+                    raise ValueError("Code no longer supported")
             
             
             # set the title    

@@ -26,18 +26,6 @@
         image="dbsettings_icon.gif"
         />
 
-    <browser:page
-        name="tutorweb-database-controlpanel"
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        class=".dbsettings.TutorWebQuizDatabaseControlPanel"
-        permission="cmf.ManagePortal"
-        />
-        
-    <adapter
-        for="Products.CMFPlone.interfaces.IPloneSiteRoot"
-        provides="Products.TutorWeb.interfaces.IDatabaseSettings"
-        factory=".dbsettings.tutorweb_database_settings" 
-        />
     <browser:resourceDirectory
       name="Products.TutorWeb.javascripts"
       directory="javascripts" 
