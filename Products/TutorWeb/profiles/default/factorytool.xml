@@ -8,17 +8,8 @@
    <type portal_type="Course"/>
    <type portal_type="StudentTesting"/>
    <type portal_type="StudentList"/>
-   <type portal_type="Tutorial"/>
-   <type portal_type="Lecture"/>
    <type portal_type="Slide"/>
-   <type portal_type="TutorWebQuiz"/>
-   <type portal_type="TutorWebQuestion"/>
-   <type portal_type="InvisibleQuestion"/>
-   <type portal_type="QuestionResult"/>
-   <type portal_type="QuizResult"/>
    <type portal_type="Sponsor"/>
    <type portal_type="ExtraDataFile"/>
-   <type portal_type="BaseQuestionSelectionParameters"/>
-   <type portal_type="QuestionSelectionParameters"/>
  </factorytypes>
 </object>
