@@ -27,8 +27,8 @@ setup(name='Products.TutorWeb',
           # -*- Extra requirements: -*- 
           'Products.DataGridField>=1.8a1',
           'zope.app.container',
-	  'numpy',         
-          
+          #NB: numpy doesn't install cleanly, and we don't need it if we don't do any IAA
+          #'numpy',
       ],
       entry_points="""
       # -*- Entry points: -*-
