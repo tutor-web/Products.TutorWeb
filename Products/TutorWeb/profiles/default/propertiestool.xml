@@ -45,7 +45,6 @@
     <element value="Discussion Item"/>
    <element value="ExtraDataFile"/>
    <element value="File"/>
-   <element value="Folder"/>
     <element value="Plone Site"/>
    <element value="QuestionResult"/>
    <element value="QuestionSelectionParameters"/>
@@ -64,7 +63,6 @@
    <element value="BaseQuestionSelectionParameters"/>
    <element value="QuestionSelectionParameters"/>
    <element value="File"/>
-   <element value="Folder"/>
    <element value="QuizResult"/>
   <element value="Sponsor"/>
    <element value="ExtraDataFile"/>
