@@ -4,10 +4,11 @@
 
   <include package="tutorweb.quiz" file="overrides.zcml" />
 
+<!--
   <adapter 
     provides=".userdataschema.IEnhancedUserDataSchema"
     for="Products.CMFCore.interfaces.ISiteRoot"
     factory=".adapter.EnhancedUserDataPanelAdapter"
     />
-
+-->
 </configure>
